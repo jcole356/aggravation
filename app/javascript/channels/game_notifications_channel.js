@@ -12,7 +12,7 @@ consumer.subscriptions.create("GameNotificationsChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-    console.log('data', date.message);
+    console.log('data', data.message);
     const div = document.getElementById('message-test');
     div.innerText = data.message;
   }
