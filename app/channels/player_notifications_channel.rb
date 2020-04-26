@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# Channel for player notifications
 class PlayerNotificationsChannel < ApplicationCable::Channel
   def subscribed
-    # stream_from "some_channel"
+    stream_from 'player_notifiations_channel'
   end
 
   def unsubscribed
