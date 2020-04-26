@@ -2,5 +2,5 @@
 
 Rails.application.routes.draw do
   get 'game/index'
-  root 'page#index'
+  root 'game#index'
 end
