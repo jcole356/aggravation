@@ -6,6 +6,10 @@ class GameNotificationsChannel < ApplicationCable::Channel
     stream_from 'game_notifications_channel'
   end
 
+  def play
+    GAME.play
+  end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end

@@ -1,17 +1,17 @@
 import consumer from "./consumer"
 
-consumer.subscriptions.create("GameNotificationsChannel", {
+export default consumer.subscriptions.create("GameNotificationsChannel", {
+  // Called when the subscription is ready for use on the server
   connected() {
-    // Called when the subscription is ready for use on the server
-    console.log('Connected to the game');
+    console.log('Connected to the game', this);
   },
 
   disconnected() {
     // Called when the subscription has been terminated by the server
   },
 
+  // Called when there's incoming data on the websocket for this channel
   received(data) {
-    // Called when there's incoming data on the websocket for this channel
     console.log('data', data.type);
     switch(data.type) {
       case 'new': {
@@ -20,10 +20,9 @@ consumer.subscriptions.create("GameNotificationsChannel", {
         break;
       }
       default:{
+        console.log('default behavior here');
         break;
       }
     }
-
-
   }
 });
