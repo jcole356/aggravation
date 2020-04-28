@@ -6,6 +6,10 @@ class GameNotificationsChannel < ApplicationCable::Channel
     stream_from 'game_notifications_channel'
   end
 
+  def draw
+    puts "Time to draw a card"
+  end
+
   def play
     GAME.play
   end
