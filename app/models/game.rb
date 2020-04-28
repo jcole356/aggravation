@@ -2,7 +2,7 @@
 
 # Class for game logic
 class Game
-  attr_reader :players, :deck, :pile
+  attr_reader :players, :deck, :pile, :status
 
   # TODO: figure out how many players require a third deck
   # TODO: add constants for maximum number of players
@@ -11,6 +11,7 @@ class Game
     @deck = Deck.new(2)
     @deck.shuffle
     @pile = Pile.new
+    @status = nil
   end
 
   def build_hand(player)
@@ -53,19 +54,26 @@ class Game
   end
 
   # TODO: the following
+  # Figure out how to create the players dynamically
   # Turns
   # Steals
   # Borrowing
   def play
-    # num_players = number_of_players
-    num_players = 3
-    num_players.times do |n|
-      # puts 'Please enter your name'
-      name = "Player #{n}"
-      @players << Player.new(name, self)
+    if status != 'started'
+      # num_players = number_of_players
+      num_players = 3
+      num_players.times do |n|
+        # puts 'Please enter your name'
+        name = "Player #{n}"
+        @players << Player.new(name, self)
+      end
+      deal
+      puts 'Dealt the cards'
+      @status = 'started'
     end
-    deal
-    puts 'Dealt the cards'
+    ActionCable.server.broadcast 'game_notifications_channel', { type: 'render', state: render }
+    # TODO: enum
+    # TODO:
     # loop do
     #   players.each(&:take_turn)
     # end
@@ -73,15 +81,16 @@ class Game
 
   def render
     render_hands
-    render_pile
+    # render_pile
   end
 
+  # TODO: render_piles
   def render_hands
-    players.each_with_index do |player, idx|
-      puts "(#{idx}) #{player.name}'s cards"
-      PlayerHand.render(player.current_hand)
-      player.render_piles
-      puts ''
+    players.map.with_index do |player, idx|
+      {
+        label: "(#{idx}) #{player.name}'s cards",
+        hand: PlayerHand.render(player.current_hand)
+      }
     end
   end
 

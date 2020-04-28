@@ -54,7 +54,7 @@ class PlayerHand
     sets_string = sets.nil? ? sets : "#{sets[0]} sets of #{sets[1]}"
     runs_string = runs.nil? ? runs : ", #{runs[0]} runs of #{runs[1]}"
     same_suit = runs && runs[3] ? ' same suit' : nil
-    puts "#{sets_string}#{runs_string}#{same_suit}"
+    "#{sets_string}#{runs_string}#{same_suit}"
   end
 
   def max_size
