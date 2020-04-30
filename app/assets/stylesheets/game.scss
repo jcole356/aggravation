@@ -1,3 +1,30 @@
 // Place all the styles related to the game controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+.hand {
+  display: block;
+  height: 90px;
+  width: 100%;
+
+  .card {
+    border: 1px solid black;
+    border-radius: 3px;
+    display: block;
+    float: left;
+    height: 88px;
+    margin-right: 5px;
+    width: 63px;
+    &.d, &.h {
+      color: red;
+    }
+  }
+}
+
+.player-container {
+  height: 110px
+}
+
+.player-label {
+  height: 20px;
+}
