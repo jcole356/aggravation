@@ -71,7 +71,8 @@ class Game
       puts 'Dealt the cards'
       @status = 'started'
     end
-    ActionCable.server.broadcast 'game_notifications_channel', { type: 'render', state: render }
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'render', state: render }
     # TODO: enum
     # TODO:
     # loop do
@@ -89,7 +90,8 @@ class Game
     players.map.with_index do |player, idx|
       {
         label: "(#{idx}) #{player.name}'s cards",
-        hand: PlayerHand.render(player.current_hand)
+        hand: PlayerHand.render(player.current_hand),
+        cards: player.render_hand
       }
     end
   end

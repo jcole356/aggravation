@@ -60,8 +60,7 @@ class Card # rubocop:disable Metrics/ClassLength
   end
 
   def self.render_cards(cards)
-    puts cards.map.with_index { |card, idx| "(#{idx}) #{card.display_name}" }
-              .join(', ')
+    cards.map(&:render)
   end
 
   def self.wild_cards
@@ -140,7 +139,7 @@ class Card # rubocop:disable Metrics/ClassLength
   end
 
   def render
-    puts display_name
+    { suit: suit, value: value }
   end
 
   def same_suit?(card)
