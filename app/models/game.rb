@@ -65,20 +65,14 @@ class Game
       num_players = 3
       num_players.times do |n|
         # puts 'Please enter your name'
-        name = "Player #{n}"
+        name = "Player #{n + 1}"
         @players << Player.new(name, self)
       end
       deal
-      puts 'Dealt the cards'
       @status = 'started'
     end
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: render }
-    # TODO: enum
-    # TODO:
-    # loop do
-    #   players.each(&:take_turn)
-    # end
   end
 
   def render
@@ -88,9 +82,9 @@ class Game
 
   # TODO: render_piles
   def render_hands
-    players.map.with_index do |player, idx|
+    players.map do |player|
       {
-        label: "(#{idx}) #{player.name}'s cards",
+        label: "#{player.name}'s cards",
         hand: PlayerHand.render(player.current_hand),
         cards: player.render_hand
       }
