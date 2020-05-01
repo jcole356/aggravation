@@ -29,6 +29,7 @@ class Game
   end
 
   def draw_from_deck
+    puts "In draw from deck"
     if deck.empty?
       deck.cards = pile.cards
       deck.shuffle

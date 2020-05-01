@@ -70,7 +70,6 @@ class PlayerHand
 
   def render
     Card.render_cards(cards)
-    puts ''
   end
 
   def render_piles

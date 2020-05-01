@@ -6,8 +6,14 @@ class GameNotificationsChannel < ApplicationCable::Channel
     stream_from 'game_notifications_channel'
   end
 
-  def draw
-    puts "Time to draw a card"
+  # TODO: this should actually be on the player channel
+  def draw(message)
+    puts 'Time to draw a card'
+    if message['choice'] == 'deck'
+      GAME.players[message['player']].draw_from_deck
+    end
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'render', state: GAME.render }
   end
 
   def play

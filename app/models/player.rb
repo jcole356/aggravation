@@ -33,7 +33,6 @@ class Player
     game.discard(card)
   end
 
-  # TODO: draw should only offer valid choices
   def draw
     loop do
       choice = draw_prompt
@@ -51,6 +50,12 @@ class Player
     end
   end
 
+  # TODO: draw should only offer valid choices
+  def draw_from_deck
+    hand.cards << game.draw_from_deck
+  end
+
+  # TODO: check for valid draw choice
   def draw_from_pile
     game.draw_from_pile
   end
@@ -183,7 +188,7 @@ class Player
   end
 
   def take_turn
-    puts "#{name}'s turn"
+    # puts "#{name}'s turn"
     render_hand
     # game.render
     # draw

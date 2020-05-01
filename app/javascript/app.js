@@ -5,7 +5,7 @@ export function playHandler() {
 }
 
 export function drawHandler() {
-  Socket.send({ action: "draw" });
+  Socket.send({ action: "draw", choice: "deck", player: 0 });
 }
 
 document.addEventListener("turbolinks:load", () => {

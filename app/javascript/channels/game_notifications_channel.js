@@ -62,6 +62,7 @@ const renderHand = (cards) => {
   return hand;
 };
 
+// TODO: render the piles as well
 // Find the players div, fill it with player divs
 const showPlayers = (players) => {
   const container = document.getElementsByClassName("players")[0];
@@ -78,6 +79,9 @@ const showPlayers = (players) => {
     container.append(div);
   });
   const button = document.getElementsByClassName("start-game")[0];
+  if (!button) {
+    return;
+  }
   button.className = "draw-card";
   button.innerHTML = "Draw a Card";
   button.removeEventListener("click", playHandler);
