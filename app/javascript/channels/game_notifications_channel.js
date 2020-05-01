@@ -38,7 +38,7 @@ const symbols = {
 };
 
 const renderCard = ({ suit, value }) => {
-  const parsedSuit = suit.toLowerCase();
+  const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
   const suitDiv = document.createElement("div");
   suitDiv.className = `suit-${parsedSuit}`;
   suitDiv.append(symbols[parsedSuit]);
