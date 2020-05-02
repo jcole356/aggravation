@@ -19,7 +19,8 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
     switch (type) {
       case "render": {
         console.log("state", state);
-        showPlayers(state);
+        showPiles(state.piles);
+        showPlayers(state.players);
         break;
       }
       case "new":
@@ -39,6 +40,16 @@ const renderHand = (cards) => {
     hand.append(div);
   });
   return hand;
+};
+
+const showPiles = (piles) => {
+  console.log("pile", piles.pile);
+  const pile = document.getElementsByClassName('pile')[0];
+  if (pile.firstChild) {
+    pile.replaceChild(Card(piles.pile), pile.firstChild);
+  } else {
+    pile.append(Card(piles.pile));
+  }
 };
 
 // TODO: render the piles as well

@@ -2,27 +2,46 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-.hand {
-  display: block;
-  height: 90px;
-  width: 100%;
+@mixin card-dimensions {
+  border: 1px solid black;
+  border-radius: 3px;
+  height: 88px;
+  width: 63px;
+}
 
-  .card {
-    border: 1px solid black;
-    border-radius: 3px;
-    display: block;
-    float: left;
-    height: 88px;
-    margin-right: 5px;
-    width: 63px;
-    &.d, &.h {
-      color: red;
-    }
+button {
+  display: inline-block;
+}
+
+.deck {
+  @include card-dimensions;
+  background-color: blue;
+  margin-right: 10px;
+}
+
+.hand {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  @include card-dimensions;
+  display: block;
+  float: left;
+  margin-right: 5px;
+  &.d,
+  &.h {
+    color: red;
   }
 }
 
-.player-container {
-  height: 110px
+.piles {
+  display: flex;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
 }
 
 .player-label {

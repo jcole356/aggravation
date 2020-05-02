@@ -22,6 +22,7 @@ class Game
     players.each do |player|
       player.hand(build_hand(player))
     end
+    pile.cards << draw_from_deck
   end
 
   def discard(card)
@@ -29,7 +30,6 @@ class Game
   end
 
   def draw_from_deck
-    puts "In draw from deck"
     if deck.empty?
       deck.cards = pile.cards
       deck.shuffle
@@ -76,8 +76,10 @@ class Game
   end
 
   def render
-    render_hands
-    # render_pile
+    {
+      players: render_hands,
+      piles: { pile: render_pile }
+    }
   end
 
   # TODO: render_piles
@@ -92,12 +94,7 @@ class Game
   end
 
   def render_pile
-    if pile.empty?
-      puts 'No Pile'
-    else
-      puts 'Pile:'
-      pile.last.render
-    end
+    pile.last.render unless pile.empty?
   end
 
   def valid_number_of_players(num)
