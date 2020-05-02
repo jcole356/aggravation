@@ -29,10 +29,16 @@ button {
   @include card-dimensions;
   display: block;
   float: left;
-  margin-right: 5px;
+  margin: 5px;
   &.d,
   &.h {
     color: red;
+  }
+}
+
+.pile {
+  .card {
+    margin: 0;
   }
 }
 
