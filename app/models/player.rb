@@ -25,11 +25,9 @@ class Player
     !hand.down && game.pile.can_draw_from_pile?
   end
 
-  def discard
-    idx = card_discard_prompt
+  def discard(idx)
     card = hand.select_card(idx)
     hand.remove_card(card)
-    discard_response(card)
     game.discard(card)
   end
 

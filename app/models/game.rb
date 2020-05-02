@@ -61,10 +61,8 @@ class Game
   # Borrowing
   def play
     if status != 'started'
-      # num_players = number_of_players
       num_players = 3
       num_players.times do |n|
-        # puts 'Please enter your name'
         name = "Player #{n + 1}"
         @players << Player.new(name, self)
       end
@@ -82,7 +80,6 @@ class Game
     }
   end
 
-  # TODO: render_piles
   def render_hands
     players.map do |player|
       {

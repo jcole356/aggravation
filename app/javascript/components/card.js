@@ -1,3 +1,5 @@
+import { discardHandler } from "../app";
+
 const symbols = {
   c: "\u2663",
   d: "\u2666",
@@ -5,7 +7,7 @@ const symbols = {
   s: "\u2660",
 };
 
-const renderCard = ({ suit, value }) => {
+const renderCard = ({ suit, value }, idx = null) => {
   const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
   const suitDiv = document.createElement("div");
   suitDiv.className = `suit-${parsedSuit}`;
@@ -14,6 +16,8 @@ const renderCard = ({ suit, value }) => {
   valueDiv.className = "value";
   valueDiv.append(value);
   const div = document.createElement("div");
+  div.setAttribute("data-idx", `${idx}`);
+  div.addEventListener('click', discardHandler);
   div.className = `card ${parsedSuit}`;
   div.append(valueDiv);
   div.append(suitDiv);

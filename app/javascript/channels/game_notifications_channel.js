@@ -35,8 +35,8 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
 const renderHand = (cards) => {
   const hand = document.createElement("div");
   hand.className = "hand";
-  cards.forEach((card) => {
-    const div = Card(card);
+  cards.forEach((card, idx) => {
+    const div = Card(card, idx);
     hand.append(div);
   });
   return hand;

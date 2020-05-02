@@ -7,11 +7,17 @@ class GameNotificationsChannel < ApplicationCable::Channel
   end
 
   # TODO: this should actually be on the player channel
-  def draw(message)
-    puts 'Time to draw a card'
-    if message['choice'] == 'deck'
-      GAME.players[message['player']].draw_from_deck
-    end
+  def discard(data)
+    puts 'Discarding'
+    GAME.players[data['player']].discard(data['choice'].to_i)
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'render', state: GAME.render }
+  end
+
+  # TODO: this should actually be on the player channel
+  def draw(data)
+    puts 'Drawing a card'
+    GAME.players[data['player']].draw_from_deck if data['choice'] == 'deck'
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: GAME.render }
   end
