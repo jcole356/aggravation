@@ -1,5 +1,6 @@
 import consumer from "./consumer";
 import { drawHandler, playHandler } from "../app";
+import Card from "../components/card";
 
 const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   // Called when the subscription is ready for use on the server
@@ -30,33 +31,11 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   },
 });
 
-const symbols = {
-  c: "\u2663",
-  d: "\u2666",
-  h: "\u2665",
-  s: "\u2660",
-};
-
-const renderCard = ({ suit, value }) => {
-  const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
-  const suitDiv = document.createElement("div");
-  suitDiv.className = `suit-${parsedSuit}`;
-  suitDiv.append(symbols[parsedSuit]);
-  const valueDiv = document.createElement("div");
-  valueDiv.className = "value";
-  valueDiv.append(value);
-  const div = document.createElement("div");
-  div.className = `card ${parsedSuit}`;
-  div.append(valueDiv);
-  div.append(suitDiv);
-  return div;
-};
-
 const renderHand = (cards) => {
   const hand = document.createElement("div");
   hand.className = "hand";
   cards.forEach((card) => {
-    const div = renderCard(card);
+    const div = Card(card);
     hand.append(div);
   });
   return hand;
