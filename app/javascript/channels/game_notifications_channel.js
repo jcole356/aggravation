@@ -1,5 +1,5 @@
 import consumer from "./consumer";
-import { drawHandler, playHandler } from "../app";
+import { drawHandler, playHandler, state as appState } from "../app";
 import Card from "../components/card";
 
 const socket = consumer.subscriptions.create("GameNotificationsChannel", {
@@ -20,6 +20,7 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
       case "render": {
         console.log("state", state);
         showPiles(state.piles);
+        appState.currentPlayer = state.current_player;
         showPlayers(state.players);
         break;
       }
@@ -32,11 +33,11 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   },
 });
 
-const renderHand = (cards) => {
+const renderHand = (cards, isCurrentPlayer) => {
   const hand = document.createElement("div");
   hand.className = "hand";
   cards.forEach((card, idx) => {
-    const div = Card(card, idx);
+    const div = Card(card, isCurrentPlayer ? idx : null);
     hand.append(div);
   });
   return hand;
@@ -57,7 +58,7 @@ const showPiles = (piles) => {
 const showPlayers = (players) => {
   const container = document.getElementsByClassName("players")[0];
   container.innerHTML = null;
-  players.forEach((player) => {
+  players.forEach((player, idx) => {
     const div = document.createElement("div");
     div.className = "player-container";
     const span = document.createElement("span");
@@ -65,7 +66,7 @@ const showPlayers = (players) => {
     span.className = "player-label";
     div.append(span);
     // div.append(player.hand);
-    div.append(renderHand(player.cards));
+    div.append(renderHand(player.cards, appState.currentPlayer === idx));
     container.append(div);
   });
   const button = document.getElementsByClassName("start-game")[0];

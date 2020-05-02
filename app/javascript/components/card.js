@@ -16,8 +16,11 @@ const renderCard = ({ suit, value }, idx = null) => {
   valueDiv.className = "value";
   valueDiv.append(value);
   const div = document.createElement("div");
-  div.setAttribute("data-idx", `${idx}`);
-  div.addEventListener('click', discardHandler);
+  // Only set the handler for current player
+  if (idx !== null) {
+    div.setAttribute("data-idx", `${idx}`);
+    div.addEventListener('click', discardHandler);
+  }
   div.className = `card ${parsedSuit}`;
   div.append(valueDiv);
   div.append(suitDiv);
