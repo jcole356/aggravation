@@ -12,6 +12,7 @@ class Game
     @deck.shuffle
     @pile = Pile.new
     @status = nil
+    @current_player_idx = nil
   end
 
   def build_hand(player)
@@ -27,6 +28,7 @@ class Game
 
   def discard(card)
     pile.discard(card)
+    @current_player_idx = (@current_player_idx + 1) % @players.count
   end
 
   def draw_from_deck
@@ -68,6 +70,7 @@ class Game
       end
       deal
       @status = 'started'
+      @current_player_idx = 0
     end
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: render }
@@ -76,7 +79,8 @@ class Game
   def render
     {
       players: render_hands,
-      piles: { pile: render_pile }
+      piles: { pile: render_pile },
+      current_player: @current_player_idx
     }
   end
 
