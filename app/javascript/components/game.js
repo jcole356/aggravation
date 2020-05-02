@@ -2,6 +2,7 @@ import { drawHandler, playHandler, state as appState } from "../app";
 import Card from "../components/card";
 import Hand from "../components/hand";
 
+// Renders the discard pile
 const renderPiles = (piles) => {
   const pile = document.getElementsByClassName("pile")[0];
   if (pile.firstChild) {
@@ -16,14 +17,17 @@ const render = ({ players, piles }) => {
   container.innerHTML = null;
   renderPiles(piles);
   players.forEach((player, idx) => {
+    const isCurrentPlayer = appState.currentPlayer === idx
     const div = document.createElement("div");
     div.className = "player-container";
+    const nameDiv = document.createElement("div");
+    nameDiv.className = `player-label${isCurrentPlayer ? ' current' : ''}`;
     const span = document.createElement("span");
     span.append(player.label);
-    span.className = "player-label";
-    div.append(span);
+    nameDiv.append(span);
+    div.append(nameDiv);
     // div.append(player.hand);
-    div.append(Hand(player.cards, appState.currentPlayer === idx));
+    div.append(Hand(player.cards, isCurrentPlayer));
     container.append(div);
   });
   const button = document.getElementsByClassName("start-game")[0];

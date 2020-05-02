@@ -11,11 +11,12 @@
 
 button {
   display: inline-block;
+  margin-bottom: 10px;
 }
 
 .deck {
   @include card-dimensions;
-  background-color: blue;
+  background-image: image-url("crazy_kimie.jpg");
   margin-right: 10px;
 }
 
@@ -45,7 +46,17 @@ button {
 }
 
 .player-label {
-  height: 20px;
+  border-radius: 16px;
+  height: 24px;
+  margin: 10px 0;
+  padding: 4px 12px;
+  width: fit-content;
+  &.current {
+    background-color: green;
+  }
+  span {
+    line-height: 24px;
+  }
 }
 
 .suit-joker {
