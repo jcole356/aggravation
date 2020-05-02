@@ -1,6 +1,6 @@
 import consumer from "./consumer";
-import { drawHandler, playHandler, state as appState } from "../app";
-import Card from "../components/card";
+import { state as appState } from "../app";
+import Game from "../components/game";
 
 const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   // Called when the subscription is ready for use on the server
@@ -13,15 +13,13 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   },
 
   // Called when there's incoming data on the websocket for this channel
-  received(data) {
-    const { state, type } = data;
+  received({ state, type }) {
     console.log("data", type);
     switch (type) {
       case "render": {
-        console.log("state", state);
-        showPiles(state.piles);
+        // console.log("state", state);
         appState.currentPlayer = state.current_player;
-        showPlayers(state.players);
+        Game(state);
         break;
       }
       case "new":
@@ -32,51 +30,5 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
     }
   },
 });
-
-const renderHand = (cards, isCurrentPlayer) => {
-  const hand = document.createElement("div");
-  hand.className = "hand";
-  cards.forEach((card, idx) => {
-    const div = Card(card, isCurrentPlayer ? idx : null);
-    hand.append(div);
-  });
-  return hand;
-};
-
-const showPiles = (piles) => {
-  console.log("pile", piles.pile);
-  const pile = document.getElementsByClassName('pile')[0];
-  if (pile.firstChild) {
-    pile.replaceChild(Card(piles.pile), pile.firstChild);
-  } else {
-    pile.append(Card(piles.pile));
-  }
-};
-
-// TODO: render the piles as well
-// Find the players div, fill it with player divs
-const showPlayers = (players) => {
-  const container = document.getElementsByClassName("players")[0];
-  container.innerHTML = null;
-  players.forEach((player, idx) => {
-    const div = document.createElement("div");
-    div.className = "player-container";
-    const span = document.createElement("span");
-    span.append(player.label);
-    span.className = "player-label";
-    div.append(span);
-    // div.append(player.hand);
-    div.append(renderHand(player.cards, appState.currentPlayer === idx));
-    container.append(div);
-  });
-  const button = document.getElementsByClassName("start-game")[0];
-  if (!button) {
-    return;
-  }
-  button.className = "draw-card";
-  button.innerHTML = "Draw a Card";
-  button.removeEventListener("click", playHandler);
-  button.addEventListener("click", drawHandler);
-};
 
 export default socket;

@@ -1,5 +1,6 @@
 import { discardHandler } from "../app";
 
+// TODO: move to constants
 const symbols = {
   c: "\u2663",
   d: "\u2666",
@@ -7,7 +8,7 @@ const symbols = {
   s: "\u2660",
 };
 
-const renderCard = ({ suit, value }, idx = null) => {
+const render = ({ suit, value }, idx = null) => {
   const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
   const suitDiv = document.createElement("div");
   suitDiv.className = `suit-${parsedSuit}`;
@@ -27,4 +28,4 @@ const renderCard = ({ suit, value }, idx = null) => {
   return div;
 };
 
-export default renderCard;
+export default render;
