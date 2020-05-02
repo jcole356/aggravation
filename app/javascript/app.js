@@ -2,9 +2,8 @@ import Socket from "./channels/game_notifications_channel.js";
 
 export const state = {};
 
-// TODO: players need to be dynamically set
 export function discardHandler(e) {
-  const idx = e.target.getAttribute('data-idx');
+  const idx = e.currentTarget.getAttribute('data-idx');
   Socket.send({ action: "discard", choice: idx, player: state.currentPlayer });
 }
 

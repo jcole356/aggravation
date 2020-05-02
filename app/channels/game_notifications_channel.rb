@@ -8,7 +8,7 @@ class GameNotificationsChannel < ApplicationCable::Channel
 
   # TODO: this should actually be on the player channel
   def discard(data)
-    puts 'Discarding'
+    puts 'DISCARDING'
     GAME.players[data['player']].discard(data['choice'].to_i)
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: GAME.render }
@@ -16,7 +16,7 @@ class GameNotificationsChannel < ApplicationCable::Channel
 
   # TODO: this should actually be on the player channel
   def draw(data)
-    puts 'Drawing a card'
+    puts 'DRAWING'
     GAME.players[data['player']].draw_from_deck if data['choice'] == 'deck'
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: GAME.render }
