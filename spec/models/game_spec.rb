@@ -30,12 +30,14 @@ RSpec.describe 'Game' do
   describe 'Game#draw_from_deck' do
     context 'when the deck is not empty' do
       it 'takes the top card from the deck' do
-        expect { game.draw_from_deck }.to change { game.deck.cards.length }.by(-1)
+        expect { game.draw_from_deck }.to change { game.deck.cards.length }
+          .by(-1)
       end
 
       it 'does not call shuffle' do
         expect(game.deck).to_not receive(:shuffle)
-        expect { game.draw_from_deck }.to change { game.deck.cards.length }.by(-1)
+        expect { game.draw_from_deck }.to change { game.deck.cards.length }
+          .by(-1)
       end
     end
 

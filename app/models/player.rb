@@ -25,6 +25,7 @@ class Player
     !hand.down && game.pile.can_draw_from_pile?
   end
 
+  # TODO: need to prevent this based on the Turn state
   def discard(idx)
     card = hand.select_card(idx)
     hand.remove_card(card)

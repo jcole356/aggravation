@@ -2,7 +2,7 @@
 
 # Class for game logic
 class Game
-  attr_reader :players, :deck, :pile, :status
+  attr_reader :players, :deck, :pile, :status, :current_player_idx, :turn
 
   # TODO: figure out how many players require a third deck
   # TODO: add constants for maximum number of players
@@ -12,7 +12,9 @@ class Game
     @deck.shuffle
     @pile = Pile.new
     @status = nil
-    @current_player_idx = nil
+    # TODO: enforce current player on all moves
+    @current_player_idx = 0
+    @turn = nil
   end
 
   def build_hand(player)
@@ -23,12 +25,14 @@ class Game
     players.each do |player|
       player.hand(build_hand(player))
     end
-    pile.cards << draw_from_deck
+    pile.cards << deck.draw
   end
 
+  # TODO: setting the current_player_idx may not belong here
   def discard(card)
     pile.discard(card)
     @current_player_idx = (@current_player_idx + 1) % @players.count
+    @turn = Turn.new(@players[@current_player_idx])
   end
 
   def draw_from_deck
@@ -37,7 +41,9 @@ class Game
       deck.shuffle
       pile.cards = []
     end
-    deck.draw
+    card = deck.draw
+    @turn.state = 'play'
+    card
   end
 
   def draw_from_pile
@@ -68,9 +74,9 @@ class Game
         name = "Player #{n + 1}"
         @players << Player.new(name, self)
       end
+      @turn = Turn.new(@players[@current_player_idx])
       deal
       @status = 'started'
-      @current_player_idx = 0
     end
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: render }
