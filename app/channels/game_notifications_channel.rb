@@ -20,11 +20,16 @@ class GameNotificationsChannel < ApplicationCable::Channel
   end
 
   # TODO: this should actually be on the player channel
-  def draw(data)
+  def draw(data) # rubocop:disable Metrics/AbcSize
     puts 'DRAWING'
     return unless valid_action(data['action'], data['player'])
 
-    GAME.players[data['player']].draw_from_deck if data['choice'] == 'deck'
+    case data['choice']
+    when 'deck'
+      GAME.players[data['player']].draw_from_deck
+    when 'pile'
+      GAME.players[data['player']].draw_from_pile
+    end
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: GAME.render }
   end

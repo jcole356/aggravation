@@ -32,10 +32,6 @@ module Prompts
       .downcase.to_sym
   end
 
-  def draw_response(choice)
-    response("Drawing from the #{Player::PILE_OPTIONS[choice]}")
-  end
-
   def play_prompt
     prompt('Would you like to Play (P) or Discard (D)?').downcase.to_sym
   end

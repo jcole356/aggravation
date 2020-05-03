@@ -25,38 +25,21 @@ class Player
     !hand.down && game.pile.can_draw_from_pile?
   end
 
-  # TODO: need to prevent this based on the Turn state
   def discard(idx)
     card = hand.select_card(idx)
     hand.remove_card(card)
     game.discard(card)
   end
 
-  def draw
-    loop do
-      choice = draw_prompt
-
-      hand.cards << if choice == :d
-                      game.deck.draw
-                    elsif choice == :p && can_draw_from_pile?
-                      draw_from_pile
-                    else
-                      invalid_selection_response
-                      next
-                    end
-      draw_response(choice)
-      break
-    end
-  end
-
-  # TODO: draw should only offer valid choices
   def draw_from_deck
     hand.cards << game.draw_from_deck
   end
 
-  # TODO: check for valid draw choice
   def draw_from_pile
-    game.draw_from_pile
+    return unless can_draw_from_pile?
+
+    card = game.draw_from_pile
+    hand.cards << card
   end
 
   def get_card_from_player(coords)
@@ -184,14 +167,5 @@ class Player
     hand.remove_card(card)
     other_player_pile.cards.insert(other_card_index, card)
     true
-  end
-
-  def take_turn
-    # puts "#{name}'s turn"
-    render_hand
-    # game.render
-    # draw
-    # hand.render
-    # play_or_discard
   end
 end

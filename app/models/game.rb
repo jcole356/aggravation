@@ -12,7 +12,6 @@ class Game
     @deck.shuffle
     @pile = Pile.new
     @status = nil
-    # TODO: enforce current player on all moves
     @current_player_idx = 0
     @turn = nil
   end
@@ -28,7 +27,6 @@ class Game
     pile.cards << deck.draw
   end
 
-  # TODO: setting the current_player_idx may not belong here
   def discard(card)
     pile.discard(card)
     @current_player_idx = (@current_player_idx + 1) % @players.count
@@ -47,7 +45,8 @@ class Game
   end
 
   def draw_from_pile
-    pile.cards.pop
+    @turn.state = 'play'
+    pile.draw
   end
 
   def number_of_players
@@ -67,7 +66,7 @@ class Game
   # Turns
   # Steals
   # Borrowing
-  def play
+  def play # rubocop:disable Metrics/MethodLength
     if status != 'started'
       num_players = 3
       num_players.times do |n|

@@ -7,8 +7,12 @@ export function discardHandler(e) {
   Socket.send({ action: "discard", choice: idx, player: state.currentPlayer });
 }
 
-export function drawHandler() {
+export function drawFromDeckHandler() {
   Socket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
+}
+
+export function drawFromPileHandler() {
+  Socket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
 }
 
 export function playHandler() {
@@ -18,4 +22,6 @@ export function playHandler() {
 document.addEventListener("turbolinks:load", () => {
   const button = document.getElementsByClassName("start-game")[0];
   button.addEventListener("click", playHandler);
+  const pile = document.getElementsByClassName("pile")[0];
+  pile.addEventListener("click", drawFromPileHandler);
 });
