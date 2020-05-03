@@ -1,4 +1,4 @@
-import { drawFromDeckHandler, playHandler, state as appState } from "../app";
+import { playHandler, state as appState } from "../app";
 import Card from "../components/card";
 import Hand from "../components/hand";
 
