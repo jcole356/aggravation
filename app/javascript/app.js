@@ -22,6 +22,8 @@ export function playHandler() {
 document.addEventListener("turbolinks:load", () => {
   const button = document.getElementsByClassName("start-game")[0];
   button.addEventListener("click", playHandler);
+  const deck = document.getElementsByClassName("deck")[0];
+  deck.addEventListener("click", drawFromDeckHandler);
   const pile = document.getElementsByClassName("pile")[0];
   pile.addEventListener("click", drawFromPileHandler);
 });

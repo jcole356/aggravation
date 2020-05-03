@@ -61,10 +61,10 @@ const render = ({ players, piles: { pile } }) => {
   if (!button) {
     return;
   }
-  button.className = "draw-card";
-  button.innerHTML = "Draw a Card";
+  button.className = "reset";
+  button.innerHTML = "Reset";
   button.removeEventListener("click", playHandler);
-  button.addEventListener("click", drawFromDeckHandler);
+  // button.addEventListener("click", drawFromDeckHandler);
 };
 
 export default render;
