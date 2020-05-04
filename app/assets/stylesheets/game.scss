@@ -45,6 +45,13 @@ button {
   &.h {
     color: red;
   }
+  &.joker {
+    .value {
+      font-size: 0.8em;
+      text-orientation: upright;
+      writing-mode: vertical-rl;
+    }
+  }
 }
 
 .pile {
