@@ -21,7 +21,7 @@ const renderPiles = (pile) => {
 
 const renderPlayerName = (label, isCurrentPlayer) => {
   const nameDiv = document.createElement("div");
-  nameDiv.className = `player-label${isCurrentPlayer ? " current" : ""}`;
+  nameDiv.className = "player-label";
   const span = document.createElement("span");
   span.append(label);
   nameDiv.append(span);
@@ -50,18 +50,26 @@ const renderPlayer = (player, isCurrentPlayer) => {
 };
 
 const render = ({ players, piles: { pile } }) => {
+  const header = document.getElementsByTagName("h1")[0];
+  header.className = 'hidden';
   const container = document.getElementsByClassName("players")[0];
   container.innerHTML = null;
+  const current = document.getElementsByClassName("current-player")[0];
+  current.innerHTML = null;
   renderPiles(pile);
   players.forEach((player, idx) => {
     const isCurrentPlayer = appState.currentPlayer === idx;
-    container.append(renderPlayer(player, isCurrentPlayer));
+    if (isCurrentPlayer) {
+      current.append(renderPlayer(player, isCurrentPlayer));
+    } else {
+      container.append(renderPlayer(player, isCurrentPlayer));
+    }
   });
   const button = document.getElementsByClassName("start-game")[0];
   if (!button) {
     return;
   }
-  button.className = "reset";
+  button.className = "reset hidden";
   button.innerHTML = "Reset";
   button.removeEventListener("click", playHandler);
   // button.addEventListener("click", drawFromDeckHandler);

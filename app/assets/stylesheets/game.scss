@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
 @mixin card-dimensions {
+  background-color: white;
   border: 1px solid black;
   border-radius: 3px;
   height: 88px;
@@ -57,19 +58,16 @@ button {
 }
 
 .player-label {
-  border-radius: 16px;
-  height: 24px;
-  margin: 10px 20px 10px 0;
-  padding: 4px 12px;
-  width: fit-content;
-  &.current {
-    background-color: green;
-  }
+  margin: 0 10px;
   span {
     line-height: 24px;
   }
 }
 
 .suit-joker {
+  display: none;
+}
+
+.hidden {
   display: none;
 }
