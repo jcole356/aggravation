@@ -24,13 +24,23 @@ button {
 .hand {
   display: flex;
   flex-wrap: wrap;
+  .card:not(:last-of-type) {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 22px;
+  }
+}
+
+.header {
+  display: flex;
 }
 
 .card {
   @include card-dimensions;
   display: block;
   float: left;
-  margin: 5px;
+  margin: 5px 0;
   &.d,
   &.h {
     color: red;
@@ -45,6 +55,7 @@ button {
 
 .piles {
   display: flex;
+  margin: 29px 24px 0 0;
 }
 
 .players {
