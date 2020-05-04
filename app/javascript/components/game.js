@@ -3,7 +3,7 @@ import Card from "../components/card";
 import Hand from "../components/hand";
 
 // Renders the top card of the discard pile
-const renderPiles = (pile) => {
+const renderDiscardPile = (pile) => {
   const pileDiv = document.getElementsByClassName("pile")[0];
 
   if (!pile) {
@@ -40,23 +40,43 @@ const renderPlayerInfo = ({ label, hand }, isCurrentPlayer) => {
   return div;
 };
 
+const renderPlayerPiles = (piles) => {
+  const div = document.createElement("div");
+  div.className = "player-piles";
+  piles.forEach(({ cards, label }) => {
+    const pileDiv = document.createElement("div");
+    pileDiv.className = "hand-pile";
+    cards.forEach((card) => {
+      pileDiv.append(Card(card));
+    });
+    div.append(pileDiv);
+    console.log("label", label);
+  });
+
+  return div;
+};
+
 const renderPlayer = (player, isCurrentPlayer) => {
   const div = document.createElement("div");
   div.className = "player-container";
-  div.append(renderPlayerInfo(player, isCurrentPlayer));
-  div.append(Hand(player.cards, isCurrentPlayer));
+  const handDiv = document.createElement("div");
+  handDiv.className = "hand-container";
+  handDiv.append(renderPlayerInfo(player, isCurrentPlayer));
+  handDiv.append(Hand(player.cards, isCurrentPlayer));
+  div.append(handDiv);
+  div.append(renderPlayerPiles(player.piles, isCurrentPlayer));
 
   return div;
 };
 
 const render = ({ players, piles: { pile } }) => {
   const header = document.getElementsByTagName("h1")[0];
-  header.className = 'hidden';
+  header.className = "hidden";
   const container = document.getElementsByClassName("players")[0];
   container.innerHTML = null;
   const current = document.getElementsByClassName("current-player")[0];
   current.innerHTML = null;
-  renderPiles(pile);
+  renderDiscardPile(pile);
   players.forEach((player, idx) => {
     const isCurrentPlayer = appState.currentPlayer === idx;
     if (isCurrentPlayer) {
@@ -72,7 +92,6 @@ const render = ({ players, piles: { pile } }) => {
   button.className = "reset hidden";
   button.innerHTML = "Reset";
   button.removeEventListener("click", playHandler);
-  // button.addEventListener("click", drawFromDeckHandler);
 };
 
 export default render;

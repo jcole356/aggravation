@@ -72,14 +72,31 @@ class PlayerHand
     Card.render_cards(cards)
   end
 
+  # TODO: write some tests
   def render_piles
-    sets&.each_with_index do |set, idx|
-      puts "(#{idx}) Set of #{set.num_cards}"
-      Card.render_cards(set.cards)
+    render_runs + render_sets
+  end
+
+  # TODO: same suit
+  def render_runs
+    return [] if runs.nil?
+
+    runs.map do |run|
+      {
+        label: "Run of #{run.num_cards}",
+        cards: Card.render_cards(run.cards)
+      }
     end
-    runs&.each_with_index do |run, idx|
-      puts "(#{idx}) Set of #{run.num_cards}"
-      Card.render_cards(run.cards)
+  end
+
+  def render_sets
+    return [] if sets.nil?
+
+    sets.map do |set|
+      {
+        label: "Set of #{set.num_cards}",
+        cards: Card.render_cards(set.cards)
+      }
     end
   end
 

@@ -84,7 +84,7 @@ class Game
   def render
     {
       players: render_hands,
-      piles: { pile: render_pile },
+      piles: { pile: render_pile }, # TODO: nesting unecessary
       current_player: @current_player_idx
     }
   end
@@ -94,7 +94,8 @@ class Game
       {
         label: "#{player.name}'s cards",
         hand: PlayerHand.render(player.current_hand),
-        cards: player.render_hand
+        cards: player.render_hand,
+        piles: player.render_piles
       }
     end
   end
