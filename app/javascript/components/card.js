@@ -17,7 +17,6 @@ function cardSelectHandler(e) {
 }
 
 function unselectCards() {
-  console.log("remove class");
   const cards = document.getElementsByClassName("card");
   Array.prototype.forEach.call(cards, (card) => {
     if (card.classList.contains("selected")) {
