@@ -1,4 +1,4 @@
-import { discardHandler } from "../app";
+import { state } from "../app";
 
 // TODO: move to constants
 const symbols = {
@@ -7,6 +7,24 @@ const symbols = {
   h: "\u2665",
   s: "\u2660",
 };
+
+function cardSelectHandler(e) {
+  unselectCards();
+  const currentTarget = e.currentTarget;
+  const idx = currentTarget.getAttribute("data-idx");
+  state.selectedCard = idx;
+  currentTarget.classList.add('selected');
+}
+
+function unselectCards() {
+  console.log("remove class");
+  const cards = document.getElementsByClassName("card");
+  Array.prototype.forEach.call(cards, (card) => {
+    if (card.classList.contains("selected")) {
+      card.classList.remove("selected");
+    }
+  });
+}
 
 const render = ({ suit, value }, idx = null) => {
   const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
@@ -20,7 +38,7 @@ const render = ({ suit, value }, idx = null) => {
   // Only set the handler for current player
   if (idx !== null) {
     div.setAttribute("data-idx", `${idx}`);
-    div.addEventListener('click', discardHandler);
+    div.addEventListener("click", cardSelectHandler);
   }
   div.className = `card ${parsedSuit}`;
   div.append(valueDiv);

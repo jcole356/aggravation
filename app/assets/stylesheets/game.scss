@@ -63,6 +63,9 @@ button {
       writing-mode: vertical-rl;
     }
   }
+  &.selected {
+    background-color: gray;
+  }
 }
 
 .pile {
