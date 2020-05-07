@@ -33,9 +33,14 @@ button {
   }
 }
 
-.hand-pile {
+.hand-pile-label {
+  height: 24px;
+  line-height: 24px;
+}
+
+.hand-pile-cards {
   @include card-dimensions;
-  margin-right: 5px;
+  margin: 5px 5px 0 0;
 }
 
 .header {
@@ -94,7 +99,7 @@ button {
 
 .player-piles {
   display: flex;
-  margin: 29px 5px 0 0;
+  margin: 0 5px 0 0;
 }
 
 .suit-joker {
