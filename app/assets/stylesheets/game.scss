@@ -10,6 +10,13 @@
   width: 63px;
 }
 
+@mixin stacked-cards {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  width: 22px;
+}
+
 button {
   display: inline-block;
   margin-bottom: 10px;
@@ -26,10 +33,7 @@ button {
   flex-wrap: wrap;
   margin-right: 12px;
   .card:not(:last-of-type) {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    width: 22px;
+    @include stacked-cards;
   }
 }
 
@@ -40,7 +44,15 @@ button {
 
 .hand-pile-cards {
   @include card-dimensions;
+  width: auto;
+  min-width: 63px; // TODO: add a var for this
   margin: 5px 5px 0 0;
+  .card {
+    margin: 0;
+  }
+  .card:not(:last-of-type) {
+    @include stacked-cards;
+  }
 }
 
 .header {

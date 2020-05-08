@@ -114,7 +114,7 @@ class PlayerHand
       @down = true if piles.all?(&:complete?)
     else
       piles.each do |pile|
-        pile.abort_play(self) unless pile.complete?
+        pile.abort_play(self)
       end
     end
   end
