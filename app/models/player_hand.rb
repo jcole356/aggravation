@@ -110,9 +110,12 @@ class PlayerHand
   end
 
   def validate
-    piles.each do |pile|
-      pile.abort_play(self) unless pile.complete?
+    if piles.all?(&:complete?)
+      @down = true if piles.all?(&:complete?)
+    else
+      piles.each do |pile|
+        pile.abort_play(self) unless pile.complete?
+      end
     end
-    @down = true if piles.all?(&:complete?)
   end
 end

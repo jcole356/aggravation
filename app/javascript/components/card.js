@@ -12,6 +12,10 @@ function cardSelectHandler(e) {
   unselectCards();
   const currentTarget = e.currentTarget;
   const idx = currentTarget.getAttribute("data-idx");
+  if (state.selectedCard === idx){
+    state.selectedCard = undefined;
+    return;
+  }
   state.selectedCard = idx;
   currentTarget.classList.add('selected');
 }

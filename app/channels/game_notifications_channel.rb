@@ -36,7 +36,11 @@ class GameNotificationsChannel < ApplicationCable::Channel
 
   def play(data)
     puts 'PLAYING'
-    puts data
+    return unless valid_action(data['action'], data['player'])
+
+    GAME.players[data['player']].play(data['pile_idx'], data['card_idx'])
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'render', state: GAME.render }
   end
 
   def start

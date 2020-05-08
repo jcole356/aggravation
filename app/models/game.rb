@@ -85,7 +85,8 @@ class Game
     {
       players: render_hands,
       piles: { pile: render_pile }, # TODO: nesting unecessary
-      current_player: @current_player_idx
+      current_player: @current_player_idx,
+      turn_state: @turn.state
     }
   end
 

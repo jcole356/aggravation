@@ -26,6 +26,7 @@ class Player
   end
 
   def discard(idx)
+    hand.validate
     card = hand.select_card(idx)
     hand.remove_card(card)
     game.discard(card)
@@ -60,44 +61,21 @@ class Player
     @hand ||= hand
   end
 
-  def play
+  def play(pile_idx, card_idx)
     piles = hand.piles
-    loop do
-      hand.render
-      hand.render_piles
-      pile_choice = choose_pile_prompt
-      break if pile_choice == 9
-
-      pile = piles[pile_choice]
-
-      if pile.nil?
-        invalid_selection_response
-        next
-      end
-
-      play_card(pile)
-    end
-    hand.validate
+    pile = piles[pile_idx]
+    play_card(pile, card_idx)
   end
 
-  def play_card(pile)
-    loop do
-      card_choice = card_play_prompt
-      break if card_choice.downcase == 's'
-
-      swap if card_choice.downcase == 'p'
-
-      card = hand.select_card(card_choice.to_i)
-      begin
-        pile.play(card)
-      rescue StandardError => e
-        puts e
-        next
-      end
-      hand.remove_card(card)
-      hand.render
-      hand.render_piles
+  def play_card(pile, card_idx)
+    card = hand.select_card(card_idx)
+    begin
+      pile.play(card)
+    rescue StandardError => e
+      puts e
+      return
     end
+    hand.remove_card(card)
   end
 
   def play_or_discard

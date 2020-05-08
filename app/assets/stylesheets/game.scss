@@ -69,6 +69,7 @@ button {
 }
 
 .pile {
+  @include card-dimensions;
   .card {
     margin: 0;
   }

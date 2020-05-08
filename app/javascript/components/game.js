@@ -1,4 +1,9 @@
-import { startHandler, state as appState } from "../app";
+import {
+  discardHandler,
+  drawFromPileHandler,
+  startHandler,
+  state as appState,
+} from "../app";
 import Card from "../components/card";
 import Hand from "../components/hand";
 import Pile from "../components/pile";
@@ -6,6 +11,13 @@ import Pile from "../components/pile";
 // Renders the top card of the discard pile
 const renderDiscardPile = (pile) => {
   const pileDiv = document.getElementsByClassName("pile")[0];
+  if (appState.turnState === "play") {
+    pileDiv.removeEventListener("click", drawFromPileHandler);
+    pileDiv.addEventListener("click", discardHandler);
+  } else {
+    pileDiv.removeEventListener("click", discardHandler);
+    pileDiv.addEventListener("click", drawFromPileHandler);
+  }
 
   if (!pile) {
     if (pileDiv.firstChild) {
@@ -64,7 +76,8 @@ const renderPlayer = (player, isCurrentPlayer) => {
   return div;
 };
 
-const render = ({ players, piles: { pile } }) => {
+const render = ({ players, piles: { pile }, turn_state }) => {
+  appState.turnState = turn_state;
   const header = document.getElementsByTagName("h1")[0];
   header.className = "hidden";
   const container = document.getElementsByClassName("players")[0];
