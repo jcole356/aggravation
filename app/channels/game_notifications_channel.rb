@@ -34,7 +34,12 @@ class GameNotificationsChannel < ApplicationCable::Channel
                                  { type: 'render', state: GAME.render }
   end
 
-  def play
+  def play(data)
+    puts 'PLAYING'
+    puts data
+  end
+
+  def start
     GAME.play
   end
 

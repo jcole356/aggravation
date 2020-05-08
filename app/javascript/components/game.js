@@ -1,4 +1,4 @@
-import { playHandler, state as appState } from "../app";
+import { startHandler, state as appState } from "../app";
 import Card from "../components/card";
 import Hand from "../components/hand";
 import Pile from "../components/pile";
@@ -44,8 +44,8 @@ const renderPlayerInfo = ({ label, hand }, isCurrentPlayer) => {
 const renderPlayerPiles = (piles) => {
   const div = document.createElement("div");
   div.className = "player-piles";
-  piles.forEach((pile) => {
-    div.append(Pile(pile));
+  piles.forEach((pile, idx) => {
+    div.append(Pile(pile, idx));
   });
 
   return div;
@@ -86,7 +86,7 @@ const render = ({ players, piles: { pile } }) => {
   }
   button.className = "reset hidden";
   button.innerHTML = "Reset";
-  button.removeEventListener("click", playHandler);
+  button.removeEventListener("click", startHandler);
 };
 
 export default render;
