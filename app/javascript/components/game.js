@@ -1,6 +1,7 @@
 import { playHandler, state as appState } from "../app";
 import Card from "../components/card";
 import Hand from "../components/hand";
+import Pile from "../components/pile";
 
 // Renders the top card of the discard pile
 const renderDiscardPile = (pile) => {
@@ -43,21 +44,8 @@ const renderPlayerInfo = ({ label, hand }, isCurrentPlayer) => {
 const renderPlayerPiles = (piles) => {
   const div = document.createElement("div");
   div.className = "player-piles";
-  piles.forEach(({ cards, label }) => {
-    const pileDiv = document.createElement("div");
-    pileDiv.className = "hand-pile";
-    const pileLabel = document.createElement("div");
-    pileLabel.append(label);
-    pileLabel.className = "hand-pile-label";
-    const pileCards = document.createElement("div");
-    pileCards.className = "hand-pile-cards";
-    cards.forEach((card) => {
-      pileCards.append(Card(card));
-    });
-    pileDiv.append(pileLabel);
-    pileDiv.append(pileCards);
-    div.append(pileDiv);
-    console.log("label", label);
+  piles.forEach((pile) => {
+    div.append(Pile(pile));
   });
 
   return div;
