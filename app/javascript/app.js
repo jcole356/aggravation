@@ -13,13 +13,14 @@ export function discardHandler() {
     choice: state.selectedCard,
     player: state.currentPlayer,
   });
+  state.selectedCard = undefined;
 }
 
 export function drawFromDeckHandler() {
   Socket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
 }
 
-// Assumes a player doesn't want to discard if they've selected a card
+// Assumes a player doesn't want to draw if they've selected a card
 export function drawFromPileHandler() {
   if (state.selectedCard !== undefined) {
     return;
