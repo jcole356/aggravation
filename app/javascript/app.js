@@ -31,10 +31,12 @@ export function drawFromPileHandler() {
 
 export function playHandler(e) {
   const idx = e.currentTarget.getAttribute("data-idx");
+  const playerIdx = e.currentTarget.getAttribute("data-player-idx");
   Socket.send({
     action: "play",
-    pile_idx: parseInt(idx, 10),
     card_idx: parseInt(state.selectedCard, 10),
+    pile_idx: parseInt(idx, 10),
+    pile_player_idx: parseInt(playerIdx, 10),
     player: state.currentPlayer, // Should this really live here?
   });
 }

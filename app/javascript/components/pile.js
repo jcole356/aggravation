@@ -1,10 +1,11 @@
 import { playHandler } from "../app";
 import Card from "./card";
 
-const render = ({ cards, label }, idx) => {
+const render = ({ cards, label }, idx, playerIdx) => {
   const pileDiv = document.createElement("div");
   pileDiv.className = "hand-pile";
   pileDiv.setAttribute("data-idx", idx);
+  pileDiv.setAttribute("data-player-idx", playerIdx);
   pileDiv.addEventListener("click", playHandler);
   const pileLabel = document.createElement("div");
   pileLabel.append(label);

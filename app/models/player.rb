@@ -25,8 +25,12 @@ class Player
     !hand.down && game.pile.can_draw_from_pile?
   end
 
+  def can_play_on_others_hand?(other_player_idx)
+    hand.down && game.players[other_player_idx].hand.down
+  end
+
   def discard(idx)
-    hand.validate
+    hand.abort_play unless hand.validate
     card = hand.select_card(idx)
     hand.remove_card(card)
     game.discard(card)
@@ -61,10 +65,17 @@ class Player
     @hand ||= hand
   end
 
-  def play(pile_idx, card_idx)
-    piles = hand.piles
+  def play(pile_idx, card_idx, other_player_idx)
+    if other_player_idx
+      return unless can_play_on_others_hand?(other_player_idx)
+
+      piles = game.players[other_player_idx].hand.piles
+    else
+      piles = hand.piles
+    end
     pile = piles[pile_idx]
     play_card(pile, card_idx)
+    hand.validate
   end
 
   def play_card(pile, card_idx)
@@ -76,24 +87,6 @@ class Player
       return
     end
     hand.remove_card(card)
-  end
-
-  def play_or_discard
-    choice = nil
-
-    until choice == :d
-      choice = play_prompt
-
-      if choice == :p
-        play
-        next
-      elsif choice == :d
-        discard
-        break
-      else
-        invalid_selection_response
-      end
-    end
   end
 
   def render_hand

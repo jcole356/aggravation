@@ -3,7 +3,6 @@
 # Class for the player's hand
 class PlayerHand
   attr_reader :sets, :runs, :cards
-  attr_accessor :down
 
   HANDS = [
     { sets: [2, 3] },
@@ -55,6 +54,12 @@ class PlayerHand
     runs_string = runs.nil? ? runs : ", #{runs[0]} runs of #{runs[1]}"
     same_suit = runs && runs[3] ? ' same suit' : nil
     "#{sets_string}#{runs_string}#{same_suit}"
+  end
+
+  def abort_play
+    piles.each do |pile|
+      pile.abort_play(self)
+    end
   end
 
   def max_size
@@ -110,12 +115,6 @@ class PlayerHand
   end
 
   def validate
-    if piles.all?(&:complete?)
-      @down = true if piles.all?(&:complete?)
-    else
-      piles.each do |pile|
-        pile.abort_play(self)
-      end
-    end
+    @down = true if piles.all?(&:complete?)
   end
 end

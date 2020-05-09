@@ -53,17 +53,17 @@ const renderPlayerInfo = ({ label, hand }, isCurrentPlayer) => {
   return div;
 };
 
-const renderPlayerPiles = (piles) => {
+const renderPlayerPiles = (piles, playerIdx) => {
   const div = document.createElement("div");
   div.className = "player-piles";
   piles.forEach((pile, idx) => {
-    div.append(Pile(pile, idx));
+    div.append(Pile(pile, idx, playerIdx));
   });
 
   return div;
 };
 
-const renderPlayer = (player, isCurrentPlayer) => {
+const renderPlayer = (player, idx, isCurrentPlayer) => {
   const div = document.createElement("div");
   div.className = "player-container";
   const handDiv = document.createElement("div");
@@ -71,7 +71,7 @@ const renderPlayer = (player, isCurrentPlayer) => {
   handDiv.append(renderPlayerInfo(player, isCurrentPlayer));
   handDiv.append(Hand(player.cards, isCurrentPlayer));
   div.append(handDiv);
-  div.append(renderPlayerPiles(player.piles, isCurrentPlayer));
+  div.append(renderPlayerPiles(player.piles, idx, isCurrentPlayer));
 
   return div;
 };
@@ -88,9 +88,9 @@ const render = ({ players, piles: { pile }, turn_state }) => {
   players.forEach((player, idx) => {
     const isCurrentPlayer = appState.currentPlayer === idx;
     if (isCurrentPlayer) {
-      current.append(renderPlayer(player, isCurrentPlayer));
+      current.append(renderPlayer(player, idx, isCurrentPlayer));
     } else {
-      container.append(renderPlayer(player, isCurrentPlayer));
+      container.append(renderPlayer(player, idx, isCurrentPlayer));
     }
   });
   const button = document.getElementsByClassName("start-game")[0];
