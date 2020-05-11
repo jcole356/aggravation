@@ -23,6 +23,7 @@ class Swap
     card2 = pile.cards[@card2_coords[2]]
     card2_idx = pile.remove_card(card2)
     pile.cards.insert(card2_idx, card1)
+    # TODO: this card must be a wild and it's value must be reset
     player1.hand.cards << card2
   end
 

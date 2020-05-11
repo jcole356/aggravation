@@ -19,16 +19,16 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
     game.deal
   end
 
-  # TODO: test that the cards are correct
   describe 'execute' do
     it "transfers card from a player's pile to another player's hand" do
+      value = player1.hand.cards.second.clone
       expect(player1.hand.cards.length).to eq(11)
       expect(set.cards.length).to eq(3)
       swap.execute
       expect(player1.hand.cards.length).to eq(11)
       expect(set.cards.length).to eq(3)
       expect(player1.hand.cards.last).to eq(wild)
-      # expect(set.cards.last).to eq(card1)
+      expect(set.cards.last.matches?(value, true)).to eq(true)
     end
   end
 
