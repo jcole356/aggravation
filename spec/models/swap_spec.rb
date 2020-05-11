@@ -19,7 +19,6 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
     game.deal
   end
 
-  # Currently not testing validation
   # TODO: test that the cards are correct
   describe 'execute' do
     it "transfers card from a player's pile to another player's hand" do
@@ -28,15 +27,18 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
       swap.execute
       expect(player1.hand.cards.length).to eq(11)
       expect(set.cards.length).to eq(3)
+      expect(player1.hand.cards.last).to eq(wild)
+      # expect(set.cards.last).to eq(card1)
     end
   end
 
   describe 'valid' do
     it 'requires the first card to match the set' do
-      expect(set.value).to eq(card2.value)
+      expect(swap.valid?(set, card1, wild)).to eq(true)
     end
 
-    xit 'requires the second card to be wild' do
+    it 'requires the second card to be wild' do
+      expect(swap.valid?(set, card1, card2)).to eq(false)
     end
   end
 end
