@@ -34,5 +34,7 @@ class Swap
   # How to handle down state (should the rules apply until they lay down, when to flip the flag)
   # When player is down cannot steal from sets anymore
   # Until player is down, can steal from anywhere
-  def valid?; end
+  def valid?(pile, card1, card2)
+    pile.value == card1.value && card2.wild?
+  end
 end

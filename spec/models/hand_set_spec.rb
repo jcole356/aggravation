@@ -81,7 +81,9 @@ RSpec.describe 'HandSet::abort_play' do
   end
 
   it 'returns cards to the player if the hand is incomplete' do
-    expect([card1, card2].all? { |c| player.hand.cards.include?(c) }).to eq(true)
+    expect([card1, card2].all? do |c|
+      player.hand.cards.include?(c)
+    end).to eq(true)
   end
 
   it 'resets the value of the set' do

@@ -10,6 +10,7 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
   let(:card2) { build(:card) }
   let(:card3) { build(:card) }
   let(:wild) { build(:wild) }
+  let(:swap) { Swap.new(game, [0, 1], [1, 0, 2]) }
 
   before(:each) do
     expect(PlayerHand).to receive(:build_sets)
@@ -18,22 +19,24 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
     game.deal
   end
 
+  # Currently not testing validation
+  # TODO: test that the cards are correct
   describe 'execute' do
-    let(:swap) { Swap.new(game, [0, 1], [1, 0, 2]) }
-
-    # TODO: Mocking this does not remove a card from the players hand
-    before(:each) do
-      expect_any_instance_of(Player).to receive(:remove_card_from_hand)
-        .and_return(:card1)
-    end
-
-    # I guess it should remove the card from the players hand?
     it "transfers card from a player's pile to another player's hand" do
       expect(player1.hand.cards.length).to eq(11)
       expect(set.cards.length).to eq(3)
       swap.execute
-      expect(player1.hand.cards.length).to eq(12)
+      expect(player1.hand.cards.length).to eq(11)
       expect(set.cards.length).to eq(3)
+    end
+  end
+
+  describe 'valid' do
+    it 'requires the first card to match the set' do
+      expect(set.value).to eq(card2.value)
+    end
+
+    xit 'requires the second card to be wild' do
     end
   end
 end
