@@ -72,6 +72,10 @@ class Player
     hand.remove_card(card)
   end
 
+  def remove_card_from_hand(idx)
+    hand.remove_card(hand.select_card(idx))
+  end
+
   def render_hand
     hand.render
   end

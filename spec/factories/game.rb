@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: this should build players by default
 FactoryBot.define do
   factory :game do
     after(:build) do |model|

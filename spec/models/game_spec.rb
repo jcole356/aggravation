@@ -7,7 +7,7 @@ RSpec.describe 'Game' do
   let(:game) { build(:game) }
 
   before(:each) do
-    %w[a b c].each { |n| game.players << build(:player, name: n, game: game) }
+    %w[a b c].each { |n| build(:player, name: n, game: game) }
   end
 
   describe 'Game.initialize' do

@@ -69,6 +69,7 @@ class Game
   def play # rubocop:disable Metrics/MethodLength
     if status != 'started'
       num_players = 3
+      # TODO: adding players to the game should happen in player init
       num_players.times do |n|
         name = "Player #{n + 1}"
         @players << Player.new(name, self)
