@@ -10,7 +10,7 @@ class Swap
   def initialize(game, card1_coords, card2_coords)
     @game = game
     @card1_coords = card1_coords # To a players hand [player_idx, card_idx]
-    @card2_coords = card2_coords # To a desination pile [player_idx, pile_idx, card_idx]
+    @card2_coords = card2_coords # To a destination pile [player_idx, pile_idx, card_idx]
   end
 
   # Execute the swap
@@ -23,7 +23,7 @@ class Swap
     card2 = pile.cards[@card2_coords[2]]
     card2_idx = pile.remove_card(card2)
     pile.cards.insert(card2_idx, card1)
-    # TODO: this card must be a wild and it's value must be reset
+    card2.reset
     player1.hand.cards << card2
   end
 
