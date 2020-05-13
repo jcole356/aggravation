@@ -20,6 +20,11 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
   end
 
   describe 'execute' do
+    # Mocking the valid? call because cards are randomized
+    before do
+      expect(swap).to receive(:valid?).and_return(true)
+    end
+
     it "transfers card from a player's pile to another player's hand" do
       value = player1.hand.cards.second.clone
       expect(player1.hand.cards.length).to eq(11)

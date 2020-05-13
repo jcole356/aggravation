@@ -29,7 +29,7 @@ function unselectCards() {
   });
 }
 
-const render = ({ suit, value }, idx = null) => {
+const render = ({ suit, value }, idx = null, handler = cardSelectHandler) => {
   const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
   const suitDiv = document.createElement("div");
   suitDiv.className = `suit-${parsedSuit}`;
@@ -41,7 +41,7 @@ const render = ({ suit, value }, idx = null) => {
   // Only set the handler for current player
   if (idx !== null) {
     div.setAttribute("data-idx", `${idx}`);
-    div.addEventListener("click", cardSelectHandler);
+    div.addEventListener("click", handler);
   }
   div.className = `card ${parsedSuit}`;
   div.append(valueDiv);

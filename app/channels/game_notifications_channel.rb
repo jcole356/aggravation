@@ -43,7 +43,10 @@ class GameNotificationsChannel < ApplicationCable::Channel
       other_player_idx = data['pile_player_idx']
     end
     GAME.players[data['player']].play(
-      data['pile_idx'], data['card_idx'], other_player_idx
+      data['pile_idx'],
+      data['card_idx'],
+      other_player_idx,
+      data['target_card_idx']
     )
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: GAME.render }

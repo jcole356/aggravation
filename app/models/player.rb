@@ -20,8 +20,10 @@ class Player
     !hand.down && game.pile.can_draw_from_pile?
   end
 
-  # TODO: this needs to be a little more robust
-  # Check for wild cards
+  def can_borrow_from_others_hand?(other_player_idx)
+    !hand.down && game.players[other_player_idx].hand.down
+  end
+
   def can_play_on_others_hand?(other_player_idx)
     hand.down && game.players[other_player_idx].hand.down
   end
@@ -48,14 +50,12 @@ class Player
     @hand ||= hand
   end
 
-  def play(pile_idx, card_idx, other_player_idx)
+  def play(pile_idx, card_idx, other_player_idx, other_card_idx)
     if other_player_idx
-      return unless can_play_on_others_hand?(other_player_idx)
-
-      piles = game.players[other_player_idx].hand.piles
-    else
-      piles = hand.piles
+      play_on_others_hand(pile_idx, card_idx, other_player_idx, other_card_idx)
+      return
     end
+    piles = hand.piles
     pile = piles[pile_idx]
     play_card(pile, card_idx)
     hand.validate
@@ -70,6 +70,22 @@ class Player
       return
     end
     hand.remove_card(card)
+  end
+
+  # Borrow is missing the other players card_idx
+  def play_on_others_hand(pile_idx, card_idx, other_player_idx, other_card_idx)
+    if can_play_on_others_hand?(other_player_idx)
+      piles = game.players[other_player_idx].hand.piles
+      pile = piles[pile_idx]
+      play_card(pile, card_idx)
+    elsif can_borrow_from_others_hand?(other_player_idx)
+      swap = Swap.new(
+        game,
+        [game.current_player_idx, card_idx],
+        [other_player_idx, pile_idx, other_card_idx]
+      )
+      swap.execute
+    end
   end
 
   def remove_card_from_hand(idx)

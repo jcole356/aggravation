@@ -21,6 +21,8 @@ class Swap
     card1 = player1.remove_card_from_hand(@card1_coords[1])
     pile = @game.players[@card2_coords[0]].hand.piles[@card2_coords[1]]
     card2 = pile.cards[@card2_coords[2]]
+    return unless valid?(pile, card1, card2)
+
     card2_idx = pile.remove_card(card2)
     pile.cards.insert(card2_idx, card1)
     card2.reset
