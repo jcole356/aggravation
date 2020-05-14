@@ -1,42 +1,40 @@
 # frozen_string_literal: true
 
-# TODO: may need more than one of these
-# Swap process steps
-# 1. Hand/Pile (steal wild card) add the card to the end of the hand
-# and highlight the card somehow
-# 2. Queue to Pile
 # Class to hold card swaps
 class Swap
   def initialize(game, card1_coords, card2_coords)
     @game = game
     @card1_coords = card1_coords # To a players hand [player_idx, card_idx]
     @card2_coords = card2_coords # To a destination pile [player_idx, pile_idx, card_idx]
+    @player1 = game.players[@card1_coords[0]]
+    @card1 = @player1.hand.select_card(@card1_coords[1])
+    @player2 = game.players[@card2_coords[0]]
+    @pile = @player2.hand.piles[@card2_coords[1]]
+    @card2 = @pile.cards[@card2_coords[2]]
   end
 
   # Execute the swap
-  # Hand <> pile (player needs a card to put down, must be a wild card)
-  # Hand <> pile (player borrows a card to play elsewhere, must be a wild card)
-  def execute # rubocop:disable Metrics/AbcSize
-    player1 = @game.players[@card1_coords[0]]
-    card1 = player1.remove_card_from_hand(@card1_coords[1])
-    pile = @game.players[@card2_coords[0]].hand.piles[@card2_coords[1]]
-    card2 = pile.cards[@card2_coords[2]]
-    return unless valid?(pile, card1, card2)
+  def execute
+    return unless valid?(@pile, @card1, @card2)
 
-    card2_idx = pile.remove_card(card2)
-    pile.cards.insert(card2_idx, card1)
-    card2.reset
-    player1.hand.cards << card2
+    @player1.remove_card_from_hand(@card1)
+    card2_idx = @pile.find_card(@card2)
+    @pile.remove_card(@card2)
+    @pile.cards.insert(card2_idx, @card1)
+    @card2.reset
+    @player1.hand.cards << @card2
   end
 
-  # Undo the swap
-  def undo; end
+  # Reverse the swap
+  def undo
+    @pile.remove_card(@card1)
+    @player1.hand.cards << @card1
+    @player1.hand.remove_card(@card2)
+    @card2.current_value(@pile.value)
+    @pile.cards.insert(@card2_coords[2], @card2)
+  end
 
   # Validate the swap
-  # When player is down
-  # How to handle down state (should the rules apply until they lay down, when to flip the flag)
-  # When player is down cannot steal from sets anymore
-  # Until player is down, can steal from anywhere
   def valid?(pile, card1, card2)
     pile.value == card1.value && card2.wild?
   end

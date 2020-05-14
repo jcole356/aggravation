@@ -32,11 +32,13 @@ class HandSet
     cards << card
   end
 
-  # Returns the index
+  def find_card(card)
+    cards.index(card)
+  end
+
+  # Returns the index, but I think it should return the card
   def remove_card(card)
-    idx = cards.index(card)
     cards.delete(card)
-    idx
   end
 
   def reset

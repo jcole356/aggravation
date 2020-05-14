@@ -30,7 +30,9 @@ class Game
   def discard(card)
     pile.discard(card)
     @current_player_idx = (@current_player_idx + 1) % @players.count
-    @turn = Turn.new(@players[@current_player_idx])
+    current_player = @players[@current_player_idx]
+    @turn = Turn.new(current_player)
+    current_player.turn = @turn
   end
 
   def draw_from_deck
@@ -74,7 +76,9 @@ class Game
         name = "Player #{n + 1}"
         @players << Player.new(name, self)
       end
-      @turn = Turn.new(@players[@current_player_idx])
+      current_player = @players[@current_player_idx]
+      @turn = Turn.new(current_player)
+      current_player.turn = @turn
       deal
       @status = 'started'
     end

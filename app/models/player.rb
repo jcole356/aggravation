@@ -3,6 +3,7 @@
 # Class for player logic
 class Player
   attr_reader :name, :current_hand, :game
+  attr_accessor :turn
 
   PILE_OPTIONS = {
     d: 'Deck',
@@ -14,6 +15,7 @@ class Player
     @game = game
     @current_hand = 0
     @score = 0
+    @turn = nil
   end
 
   def can_draw_from_pile?
@@ -28,8 +30,12 @@ class Player
     hand.down && game.players[other_player_idx].hand.down
   end
 
+  # TODO: If you undo swaps, you cannot allow the discard to finish
   def discard(idx)
-    hand.abort_play unless hand.validate
+    unless hand.validate
+      hand.abort_play unless hand.validate
+      @turn.swaps.each(&:undo)
+    end
     card = hand.select_card(idx)
     hand.remove_card(card)
     game.discard(card)
@@ -58,6 +64,7 @@ class Player
     piles = hand.piles
     pile = piles[pile_idx]
     play_card(pile, card_idx)
+    # TODO: not sure about this
     hand.validate
   end
 
@@ -84,12 +91,13 @@ class Player
         [game.current_player_idx, card_idx],
         [other_player_idx, pile_idx, other_card_idx]
       )
+      @turn.swaps << swap
       swap.execute
     end
   end
 
-  def remove_card_from_hand(idx)
-    hand.remove_card(hand.select_card(idx))
+  def remove_card_from_hand(card)
+    hand.remove_card(card)
   end
 
   def render_hand
