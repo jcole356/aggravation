@@ -108,7 +108,7 @@ class Game
   def render_hands
     players.map do |player|
       {
-        label: "#{player.name}'s cards",
+        label: player.name,
         hand: PlayerHand.render(player.current_hand),
         cards: player.render_hand,
         piles: player.render_piles,

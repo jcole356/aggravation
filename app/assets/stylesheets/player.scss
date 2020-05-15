@@ -1,3 +1,31 @@
 // Place all the styles related to the player controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+.players {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-info {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.player-label {
+  margin: 0 10px;
+  span {
+    line-height: 24px;
+  }
+}
+
+.player-piles {
+  display: flex;
+  margin: 0 5px 0 0;
+}
