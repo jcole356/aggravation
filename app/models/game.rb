@@ -2,7 +2,7 @@
 
 # Class for game logic
 class Game
-  attr_reader :players, :deck, :pile, :status, :current_player_idx, :turn
+  attr_reader :players, :deck, :pile, :status, :current_player_idx, :turn, :hand
 
   # TODO: figure out how many players require a third deck
   # TODO: add constants for maximum number of players
@@ -14,6 +14,7 @@ class Game
     @status = nil
     @current_player_idx = 0
     @turn = nil
+    @hand = nil
   end
 
   def build_hand(player)
@@ -21,6 +22,7 @@ class Game
   end
 
   def deal
+    @hand = GameHand.new
     players.each do |player|
       player.hand(build_hand(player))
     end
@@ -29,6 +31,14 @@ class Game
 
   def discard(card)
     pile.discard(card)
+
+    # TODO: unless a player has won their hand
+    # TODO: write some tests around this
+    if hand.done
+      @players.each(&:total_score)
+      # TODO: start a new hand
+      return
+    end
     @current_player_idx = (@current_player_idx + 1) % @players.count
     current_player = @players[@current_player_idx]
     @turn = Turn.new(current_player)
@@ -101,7 +111,8 @@ class Game
         label: "#{player.name}'s cards",
         hand: PlayerHand.render(player.current_hand),
         cards: player.render_hand,
-        piles: player.render_piles
+        piles: player.render_piles,
+        score: player.score
       }
     end
   end

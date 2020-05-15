@@ -28,6 +28,10 @@ RSpec.describe 'Game' do
   end
 
   describe 'Game#draw_from_deck' do
+    before(:each) do
+      game.deal
+    end
+
     context 'when the deck is not empty' do
       it 'takes the top card from the deck' do
         expect { game.draw_from_deck }.to change { game.deck.cards.length }

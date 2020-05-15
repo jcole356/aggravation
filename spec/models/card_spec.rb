@@ -31,6 +31,18 @@ RSpec.describe 'Card.all_cards' do
   end
 end
 
+RSpec.describe 'Card.sum' do
+  let(:ace) { build(:ace) }
+  let(:wild) { build(:wild) }
+  let(:card1) { build(:card, value: Card::VALUES[:six]) }
+  let(:card2) { build(:card, value: Card::VALUES[:eight]) }
+  let(:cards) { [ace, wild, card1, card2] }
+
+  it 'returns the sum of an array of cards' do
+    expect(Card.sum(cards)).to eq(50)
+  end
+end
+
 RSpec.describe 'Card::matches?' do
   let(:card1) { build(:card) }
   let(:wild) { build(:wild) }

@@ -51,16 +51,20 @@ class Card # rubocop:disable Metrics/ClassLength
     SUITS.values
   end
 
-  def self.values
-    VALUES.values
-  end
-
   def self.possible_ranks
     Card.values + Card.special
   end
 
   def self.render_cards(cards)
     cards.map(&:render)
+  end
+
+  def self.sum(cards)
+    cards.inject(0) { |acc, card| acc + card.points }
+  end
+
+  def self.values
+    VALUES.values
   end
 
   def self.wild_cards

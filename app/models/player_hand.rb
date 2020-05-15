@@ -14,6 +14,7 @@ class PlayerHand
     @runs = runs
     @cards = cards
     @down = false
+    @score = 0
   end
 
   # Factory method
@@ -66,6 +67,10 @@ class PlayerHand
     17
   end
 
+  def out?
+    cards.count.zero?
+  end
+
   def piles
     piles = []
     piles += sets if sets
@@ -103,6 +108,10 @@ class PlayerHand
         cards: Card.render_cards(set.cards)
       }
     end
+  end
+
+  def score
+    Card.sum(cards)
   end
 
   def select_card(idx)

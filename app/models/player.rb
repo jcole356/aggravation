@@ -2,7 +2,7 @@
 
 # Class for player logic
 class Player
-  attr_reader :name, :current_hand, :game
+  attr_reader :name, :current_hand, :game, :score
   attr_accessor :turn
 
   PILE_OPTIONS = {
@@ -31,6 +31,7 @@ class Player
   end
 
   # TODO: If you undo swaps, you cannot allow the discard to finish
+  # TODO: Can't allow discard to discard a stolen card
   def discard(idx)
     unless hand.validate
       hand.abort_play unless hand.validate
@@ -38,6 +39,7 @@ class Player
     end
     card = hand.select_card(idx)
     hand.remove_card(card)
+    game.hand.end if hand.out?
     game.discard(card)
   end
 
@@ -65,6 +67,7 @@ class Player
     pile = piles[pile_idx]
     play_card(pile, card_idx)
     # TODO: not sure about this
+    game.hand.end if hand.out?
     hand.validate
   end
 
@@ -106,5 +109,9 @@ class Player
 
   def render_piles
     hand.render_piles
+  end
+
+  def total_score
+    @score += hand.score
   end
 end
