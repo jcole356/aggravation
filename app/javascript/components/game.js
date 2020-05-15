@@ -5,8 +5,7 @@ import {
   state as appState,
 } from "../app";
 import Card from "../components/card";
-import Hand from "../components/hand";
-import Pile from "../components/pile";
+import Player from "../components/player";
 
 // Renders the top card of the discard pile
 const renderDiscardPile = (pile) => {
@@ -32,50 +31,6 @@ const renderDiscardPile = (pile) => {
   }
 };
 
-const renderPlayerName = (label, isCurrentPlayer) => {
-  const nameDiv = document.createElement("div");
-  nameDiv.className = "player-label";
-  const span = document.createElement("span");
-  span.append(label);
-  nameDiv.append(span);
-
-  return nameDiv;
-};
-
-const renderPlayerInfo = ({ label, hand }, isCurrentPlayer) => {
-  const div = document.createElement("div");
-  div.className = "player-info";
-  const handSpan = document.createElement("span");
-  handSpan.append(hand);
-  div.append(renderPlayerName(label, isCurrentPlayer));
-  div.append(handSpan);
-
-  return div;
-};
-
-const renderPlayerPiles = (piles, playerIdx) => {
-  const div = document.createElement("div");
-  div.className = "player-piles";
-  piles.forEach((pile, idx) => {
-    div.append(Pile(pile, idx, playerIdx));
-  });
-
-  return div;
-};
-
-const renderPlayer = (player, idx, isCurrentPlayer) => {
-  const div = document.createElement("div");
-  div.className = "player-container";
-  const handDiv = document.createElement("div");
-  handDiv.className = "hand-container";
-  handDiv.append(renderPlayerInfo(player, isCurrentPlayer));
-  handDiv.append(Hand(player.cards, isCurrentPlayer));
-  div.append(handDiv);
-  div.append(renderPlayerPiles(player.piles, idx, isCurrentPlayer));
-
-  return div;
-};
-
 const render = ({ players, piles: { pile }, turn_state }) => {
   appState.turnState = turn_state;
   const header = document.getElementsByTagName("h1")[0];
@@ -88,9 +43,9 @@ const render = ({ players, piles: { pile }, turn_state }) => {
   players.forEach((player, idx) => {
     const isCurrentPlayer = appState.currentPlayer === idx;
     if (isCurrentPlayer) {
-      current.append(renderPlayer(player, idx, isCurrentPlayer));
+      current.append(Player(player, idx, isCurrentPlayer));
     } else {
-      container.append(renderPlayer(player, idx, isCurrentPlayer));
+      container.append(Player(player, idx, isCurrentPlayer));
     }
   });
   const button = document.getElementsByClassName("start-game")[0];
