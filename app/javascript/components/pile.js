@@ -1,5 +1,6 @@
 import { play, playHandler, state } from "../app";
 import Card from "./card";
+import { createElementWithClass } from "../utils";
 
 // Set this on all piles except your own
 function cardTargetSelectHandler(e) {
@@ -11,23 +12,20 @@ function cardTargetSelectHandler(e) {
     return;
   }
   state.targetCard = idx;
-  const pileNode = currentTarget.parentNode.parentNode; 
+  const pileNode = currentTarget.parentNode.parentNode;
   const pileIdx = pileNode.getAttribute("data-idx");
   const playerIdx = pileNode.getAttribute("data-player-idx");
   play(playerIdx, pileIdx, idx);
 }
 
 const render = ({ cards, label }, idx, playerIdx) => {
-  const pileDiv = document.createElement("div");
-  pileDiv.className = "hand-pile";
+  const pileDiv = createElementWithClass("div", "hand-pile");
   pileDiv.setAttribute("data-idx", idx);
   pileDiv.setAttribute("data-player-idx", playerIdx);
   pileDiv.addEventListener("click", playHandler);
-  const pileLabel = document.createElement("div");
+  const pileLabel = createElementWithClass("div", "hand-pile-label");
   pileLabel.append(label);
-  pileLabel.className = "hand-pile-label";
-  const pileCards = document.createElement("div");
-  pileCards.className = "hand-pile-cards";
+  const pileCards = createElementWithClass("div", "hand-pile-cards");
   const handler =
     playerIdx === state.currentPlayer ? null : cardTargetSelectHandler;
   cards.forEach((card, idx) => {

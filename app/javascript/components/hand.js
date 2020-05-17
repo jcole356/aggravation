@@ -1,8 +1,8 @@
 import Card from "../components/card";
+import { createElementWithClass } from "../utils"
 
 const render = (cards, isCurrentPlayer) => {
-  const hand = document.createElement("div");
-  hand.className = "hand";
+  const hand = createElementWithClass("div", "hand");
   cards.forEach((card, idx) => {
     const div = Card(card, isCurrentPlayer ? idx : null);
     hand.append(div);
