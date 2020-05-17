@@ -2,15 +2,11 @@
 
 # Class for defining set (avoids naming collision with Ruby Set)
 class HandSet < PlayerPile
-  attr_reader :num_cards, :cards, :value
+  attr_reader :value
 
   def initialize(num_cards)
     super
     @value = nil
-  end
-
-  def complete?
-    cards.length >= num_cards
   end
 
   def play(card)
@@ -20,15 +16,6 @@ class HandSet < PlayerPile
     card.current_value(value) if card.wild?
 
     cards << card
-  end
-
-  def find_card(card)
-    cards.index(card)
-  end
-
-  # Returns the index, but I think it should return the card
-  def remove_card(card)
-    cards.delete(card)
   end
 
   def reset
