@@ -1,22 +1,12 @@
 # frozen_string_literal: true
 
 # Class for defining set (avoids naming collision with Ruby Set)
-class HandSet
+class HandSet < PlayerPile
   attr_reader :num_cards, :cards, :value
 
   def initialize(num_cards)
-    @num_cards = num_cards
-    @cards = []
+    super
     @value = nil
-  end
-
-  # TODO: might end up sharing with run class
-  # When the player can't put down, cards are returned to their hand
-  def abort_play(hand)
-    cards.each do |card|
-      hand.cards << card
-    end
-    reset
   end
 
   def complete?
@@ -42,7 +32,7 @@ class HandSet
   end
 
   def reset
-    @cards = []
+    super
     @value = nil
   end
 
