@@ -4,7 +4,9 @@
 class GameHand
   attr_reader :done
 
-  def initialize
+  # TODO: why do I need to keep track of the dealer index here?
+  def initialize(dealer_idx)
+    @dealer_idx = dealer_idx
     @done = false
   end
 

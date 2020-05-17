@@ -12,7 +12,8 @@ class Game
     @deck.shuffle
     @pile = Pile.new
     @status = nil
-    @current_player_idx = 0
+    @dealer_idx = 0
+    @current_player_idx = 1
     @turn = nil
     @hand = nil
   end
@@ -22,21 +23,17 @@ class Game
   end
 
   def deal
-    @hand = GameHand.new
     players.each do |player|
-      player.hand(build_hand(player))
+      player.start_new_hand(build_hand(player))
     end
     pile.cards << deck.draw
   end
 
   def discard(card)
     pile.discard(card)
-
-    # TODO: unless a player has won their hand
-    # TODO: write some tests around this
     if hand.done
       @players.each(&:total_score)
-      # TODO: start a new hand
+      next_hand
       return
     end
     @current_player_idx = (@current_player_idx + 1) % @players.count
@@ -61,6 +58,14 @@ class Game
     pile.draw
   end
 
+  def next_hand
+    @dealer_idx += 1
+    @players.each do |player|
+      player.advance_hand if player.hand.down
+    end
+    start_new_hand
+  end
+
   def number_of_players
     invalid = false
     num_players = 0
@@ -75,10 +80,8 @@ class Game
 
   # TODO: the following
   # Figure out how to create the players dynamically
-  # Turns
   # Steals
-  # Borrowing
-  def play # rubocop:disable Metrics/MethodLength
+  def play
     if status != 'started'
       num_players = 3
       # TODO: adding players to the game should happen in player init
@@ -86,10 +89,7 @@ class Game
         name = "Player #{n + 1}"
         @players << Player.new(name, self)
       end
-      current_player = @players[@current_player_idx]
-      @turn = Turn.new(current_player)
-      current_player.turn = @turn
-      deal
+      start_new_hand
       @status = 'started'
     end
     ActionCable.server.broadcast 'game_notifications_channel',
@@ -117,8 +117,19 @@ class Game
     end
   end
 
+  # TODO: got an error here.  Deck not recycling properly?
   def render_pile
     pile.last.render unless pile.empty?
+  end
+
+  # TODO: randomly choose a dealer
+  def start_new_hand
+    @hand = GameHand.new(@dealer_idx)
+    @current_player_idx = @dealer_idx + 1
+    current_player = @players[@current_player_idx]
+    @turn = Turn.new(current_player)
+    current_player.turn = @turn
+    deal
   end
 
   def valid_number_of_players(num)

@@ -29,7 +29,7 @@ RSpec.describe 'Game' do
 
   describe 'Game#draw_from_deck' do
     before(:each) do
-      game.deal
+      game.start_new_hand
     end
 
     context 'when the deck is not empty' do
@@ -61,6 +61,14 @@ RSpec.describe 'Game' do
           .to change { game.deck.cards.length }
           .by(game.pile.cards.length - 1)
       end
+    end
+  end
+
+  describe 'Game#start_new_hand' do
+    it 'sets up the new hand' do
+      expect(GameHand).to receive(:new)
+      expect(game).to receive(:deal)
+      game.start_new_hand
     end
   end
 end

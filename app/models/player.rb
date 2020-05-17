@@ -2,7 +2,7 @@
 
 # Class for player logic
 class Player
-  attr_reader :name, :current_hand, :game, :score
+  attr_reader :name, :game, :score, :current_hand
   attr_accessor :turn
 
   PILE_OPTIONS = {
@@ -16,6 +16,10 @@ class Player
     @current_hand = 0
     @score = 0
     @turn = nil
+  end
+
+  def advance_hand
+    @current_hand += 1
   end
 
   def can_draw_from_pile?
@@ -66,7 +70,6 @@ class Player
     piles = hand.piles
     pile = piles[pile_idx]
     play_card(pile, card_idx)
-    # TODO: not sure about this
     game.hand.end if hand.out?
     hand.validate
   end
@@ -109,6 +112,10 @@ class Player
 
   def render_piles
     hand.render_piles
+  end
+
+  def start_new_hand(hand)
+    @hand = hand
   end
 
   def total_score

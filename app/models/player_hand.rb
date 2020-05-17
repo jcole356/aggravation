@@ -47,13 +47,14 @@ class PlayerHand
     result
   end
 
+  # TODO: this could use some conditional punctuation
   def self.render(hand_idx)
     current_hand = PlayerHand::HANDS[hand_idx]
     sets = current_hand[:sets]
     runs = current_hand[:runs]
     sets_string = sets.nil? ? sets : "#{sets[0]} sets of #{sets[1]}"
-    runs_string = runs.nil? ? runs : ", #{runs[0]} runs of #{runs[1]}"
-    same_suit = runs && runs[3] ? ' same suit' : nil
+    runs_string = runs.nil? ? runs : "#{runs[0]} runs of #{runs[1]}"
+    same_suit = runs && runs[3] ? ', same suit' : nil
     "#{sets_string}#{runs_string}#{same_suit}"
   end
 
