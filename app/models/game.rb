@@ -18,6 +18,11 @@ class Game
     @hand = nil
   end
 
+  def broadcast_render
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'render', state: render }
+  end
+
   def build_hand(player)
     PlayerHand.build(player.current_hand, deck)
   end
@@ -92,8 +97,7 @@ class Game
       start_new_hand
       @status = 'started'
     end
-    ActionCable.server.broadcast 'game_notifications_channel',
-                                 { type: 'render', state: render }
+    broadcast_render
   end
 
   def render
