@@ -1,4 +1,5 @@
 import { state } from "../app";
+import { createElementWithClass } from "../utils";
 
 // TODO: move to constants
 const symbols = {
@@ -12,12 +13,12 @@ function cardSelectHandler(e) {
   unselectCards();
   const currentTarget = e.currentTarget;
   const idx = currentTarget.getAttribute("data-idx");
-  if (state.selectedCard === idx){
+  if (state.selectedCard === idx) {
     state.selectedCard = undefined;
     return;
   }
   state.selectedCard = idx;
-  currentTarget.classList.add('selected');
+  currentTarget.classList.add("selected");
 }
 
 function unselectCards() {
@@ -31,21 +32,19 @@ function unselectCards() {
 
 const render = ({ suit, value }, idx = null, handler = cardSelectHandler) => {
   const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();
-  const suitDiv = document.createElement("div");
-  suitDiv.className = `suit-${parsedSuit}`;
+  const suitDiv = createElementWithClass("div", `suit-${parsedSuit}`);
   suitDiv.append(symbols[parsedSuit]);
-  const valueDiv = document.createElement("div");
-  valueDiv.className = "value";
+  const valueDiv = createElementWithClass("div", "value");
   valueDiv.append(value);
-  const div = document.createElement("div");
+  const div = createElementWithClass("div", `card ${parsedSuit}`);
   // Only set the handler for current player
   if (idx !== null) {
     div.setAttribute("data-idx", `${idx}`);
     div.addEventListener("click", handler);
   }
-  div.className = `card ${parsedSuit}`;
   div.append(valueDiv);
   div.append(suitDiv);
+
   return div;
 };
 
