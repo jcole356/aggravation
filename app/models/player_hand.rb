@@ -124,7 +124,11 @@ class PlayerHand
     card
   end
 
+  def valid?
+    piles.all?(&:complete?)
+  end
+
   def validate
-    @down = true if piles.all?(&:complete?)
+    @down = valid?
   end
 end

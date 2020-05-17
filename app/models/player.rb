@@ -37,10 +37,11 @@ class Player
   # TODO: If you undo swaps, you cannot allow the discard to finish
   # TODO: Can't allow discard to discard a stolen card
   def discard(idx)
-    unless hand.validate
-      hand.abort_play unless hand.validate
+    unless hand.valid?
+      hand.abort_play
       @turn.swaps.each(&:undo)
     end
+    hand.validate
     card = hand.select_card(idx)
     hand.remove_card(card)
     game.hand.end if hand.out?
