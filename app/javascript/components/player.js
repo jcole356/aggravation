@@ -1,25 +1,24 @@
-import Hand from './hand'
-import Pile from './pile'
+import Hand from "./hand";
+import Pile from "./pile";
+import { createElementWithClass } from "../utils";
 
 const renderPlayerInfo = ({ label, hand, score }) => {
-  const div = document.createElement("div");
-  div.className = "player-info";
+  const playerDiv = createElementWithClass("div", "player-info");
   const nameSpan = document.createElement("span");
   nameSpan.append(label);
   const handSpan = document.createElement("span");
   handSpan.append(hand);
   const scoreSpan = document.createElement("span");
   scoreSpan.append(`${score} points`);
-  div.append(nameSpan);
-  div.append(handSpan);
-  div.append(scoreSpan);
+  playerDiv.append(nameSpan);
+  playerDiv.append(handSpan);
+  playerDiv.append(scoreSpan);
 
-  return div;
+  return playerDiv;
 };
 
 const renderPlayerPiles = (piles, playerIdx) => {
-  const div = document.createElement("div");
-  div.className = "player-piles";
+  const div = createElementWithClass("div", "player-piles");
   piles.forEach((pile, idx) => {
     div.append(Pile(pile, idx, playerIdx));
   });
@@ -27,15 +26,11 @@ const renderPlayerPiles = (piles, playerIdx) => {
   return div;
 };
 
-// TODO: break up or annotate
 const render = (player, idx, isCurrentPlayer) => {
-  const div = document.createElement("div");
-  div.className = "player-container";
+  const div = createElementWithClass("div", "player-container");
   div.append(renderPlayerInfo(player, isCurrentPlayer));
-  const cardsDiv = document.createElement("div");
-  cardsDiv.className = 'cards-container';
-  const handDiv = document.createElement("div");
-  handDiv.className = "hand-container";
+  const cardsDiv = createElementWithClass("div", "cards-container");
+  const handDiv = createElementWithClass("div", "hand-container");
   handDiv.append(Hand(player.cards, isCurrentPlayer));
   cardsDiv.append(handDiv);
   cardsDiv.append(renderPlayerPiles(player.piles, idx, isCurrentPlayer));
