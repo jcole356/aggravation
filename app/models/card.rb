@@ -97,10 +97,6 @@ class Card # rubocop:disable Metrics/ClassLength
     value
   end
 
-  def display_name
-    "#{value}#{suit}"
-  end
-
   # Arg card must have current_values established
   def matches?(card, suit = false)
     return matches_value?(card) && matches_suit?(card) if suit
@@ -120,8 +116,15 @@ class Card # rubocop:disable Metrics/ClassLength
     wild? || current_value == card.current_value
   end
 
+  # TODO: validate this is a valid rank
+  # TODO: test for edge cases
+  def next_value
+    Card.possible_ranks[Card.possible_ranks.index(current_value) + 1]
+  end
+
   # Can the current card be played next in a run
   # TODO: this may belong in the Run class
+  # TODO: the suit check may be a bit much here
   def next?(prev_card)
     return false unless same_suit?(prev_card)
 
