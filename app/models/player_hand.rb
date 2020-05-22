@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 # Class for the player's hand
-class PlayerHand
+class PlayerHand # rubocop:disable Metrics/ClassLength
   attr_reader :sets, :runs, :cards, :down
 
   HANDS = [
     { sets: [2, 3] },
-    { runs: [2, 4, true] }
+    { runs: [2, 4, true] },
+    { sets: [1, 3], runs: [1, 4] }
   ].freeze
 
   def initialize(cards, sets = nil, runs = nil)
@@ -47,15 +48,14 @@ class PlayerHand
     result
   end
 
-  # TODO: this could use some conditional punctuation
   def self.render(hand_idx)
     current_hand = PlayerHand::HANDS[hand_idx]
     sets = current_hand[:sets]
     runs = current_hand[:runs]
-    sets_string = sets.nil? ? sets : "#{sets[0]} sets of #{sets[1]}"
-    runs_string = runs.nil? ? runs : "#{runs[0]} runs of #{runs[1]}"
+    sets_string = sets.nil? ? '' : "#{sets[0]} #{'set'.pluralize(sets[0])} of #{sets[1]}"
+    runs_string = runs.nil? ? '' : "#{runs[0]} #{'run'.pluralize(runs[0])} of #{runs[1]}"
     same_suit = runs && runs[3] ? ', same suit' : nil
-    "#{sets_string}#{runs_string}#{same_suit}"
+    "#{sets_string} #{runs_string} #{same_suit}"
   end
 
   def abort_play
@@ -83,9 +83,9 @@ class PlayerHand
     Card.render_cards(cards)
   end
 
-  # TODO: write some tests
+  # Order matters here
   def render_piles
-    render_runs + render_sets
+    render_sets + render_runs
   end
 
   # TODO: same suit
