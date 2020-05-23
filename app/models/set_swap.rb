@@ -10,4 +10,11 @@ class SetSwap < Swap
     @card2.current_value(@pile.value)
     @pile.cards.insert(@card2_coords[2], @card2)
   end
+
+  # Validate the swap
+  def valid?(pile, card1, card2)
+    return false unless super
+
+    pile.value == card1.value
+  end
 end

@@ -12,4 +12,11 @@ class RunSwap < Swap
     @card2.current_suit(@pile.suit)
     @pile.cards.insert(@card2_coords[2], @card2)
   end
+
+  # Validate the swap
+  def valid?(pile, card1, card2)
+    return false unless super
+
+    pile.suit == card1.suit
+  end
 end

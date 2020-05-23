@@ -25,15 +25,8 @@ class Swap
     @player1.hand.cards << @card2
   end
 
-  # TODO: move to subclasses
   # Validate the swap
-  def valid?(pile, card1, card2)
-    return false unless card2.wild?
-
-    if pile.type == HandSet
-      pile.value == card1.value
-    elsif pile.type == Run
-      pile.suit == card1.suit
-    end
+  def valid?(_pile, _card1, card2)
+    card2.wild?
   end
 end
