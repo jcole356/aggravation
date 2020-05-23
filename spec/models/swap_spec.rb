@@ -10,7 +10,9 @@ RSpec.describe 'Swap' do # rubocop:disable Metrics/BlockLength
   let(:card2) { build(:card) }
   let(:card3) { build(:card) }
   let(:wild) { build(:wild) }
-  let(:swap) { Swap.new(game, [0, 1], [1, 0, 2]) }
+  let(:swap) do
+    SetSwap.new(game: game, card1_coords: [0, 1], card2_coords: [1, 0, 2])
+  end
 
   before(:each) do
     expect(PlayerHand).to receive(:build_sets)

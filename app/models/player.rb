@@ -88,16 +88,22 @@ class Player
 
   # Borrow is missing the other players card_idx
   def play_on_others_hand(pile_idx, card_idx, other_player_idx, other_card_idx)
+    piles = game.players[other_player_idx].hand.piles
+    pile = piles[pile_idx]
+
     if can_play_on_others_hand?(other_player_idx)
-      piles = game.players[other_player_idx].hand.piles
-      pile = piles[pile_idx]
       play_card(pile, card_idx)
     elsif can_borrow_from_others_hand?(other_player_idx)
-      swap = Swap.new(
-        game,
-        [game.current_player_idx, card_idx],
-        [other_player_idx, pile_idx, other_card_idx]
-      )
+      args = {
+        game: game,
+        card1_coords: [game.current_player_idx, card_idx],
+        card2_coords: [other_player_idx, pile_idx, other_card_idx]
+      }
+      if pile.type == HandSet
+        swap = SetSwap.new(args)
+      elsif pile.type == Run
+        swap = RunSwap.new(args)
+      end
       @turn.swaps << swap
       swap.execute
     end

@@ -19,14 +19,16 @@ class Run < PlayerPile
   end
 
   # TODO: need to figure out how to play on either end of the run
+  # TODO: for each wild card played, you need to retroatively fix the value and suit of each
+  # Once the suit is set.  Work backwards from the first normal card and set the values of the wilds
   def play(card)
     raise('Invalid Move') && return unless valid_move?(card)
-
-    @suit ||= card.suit
 
     if card.wild?
       card.current_suit(@suit)
       card.current_value(last_card.next_value)
+    else
+      @suit ||= card.suit
     end
 
     cards << card

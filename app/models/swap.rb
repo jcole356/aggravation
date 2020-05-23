@@ -2,7 +2,7 @@
 
 # Class to hold card swaps
 class Swap
-  def initialize(game, card1_coords, card2_coords)
+  def initialize(game:, card1_coords:, card2_coords:)
     @game = game
     @card1_coords = card1_coords # To a players hand [player_idx, card_idx]
     @card2_coords = card2_coords # To a destination pile [player_idx, pile_idx, card_idx]
@@ -25,17 +25,15 @@ class Swap
     @player1.hand.cards << @card2
   end
 
-  # Reverse the swap
-  def undo
-    @pile.remove_card(@card1)
-    @player1.hand.cards << @card1
-    @player1.hand.remove_card(@card2)
-    @card2.current_value(@pile.value)
-    @pile.cards.insert(@card2_coords[2], @card2)
-  end
-
+  # TODO: move to subclasses
   # Validate the swap
   def valid?(pile, card1, card2)
-    pile.value == card1.value && card2.wild?
+    return false unless card2.wild?
+
+    if pile.type == HandSet
+      pile.value == card1.value
+    elsif pile.type == Run
+      pile.suit == card1.suit
+    end
   end
 end

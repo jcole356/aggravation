@@ -32,4 +32,8 @@ class PlayerPile
   def reset
     @cards = []
   end
+
+  def type
+    self.class
+  end
 end
