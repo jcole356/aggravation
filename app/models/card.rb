@@ -87,6 +87,10 @@ class Card # rubocop:disable Metrics/ClassLength
     all_cards
   end
 
+  def ace?
+    false
+  end
+
   def current_suit
     suit
   end
@@ -120,13 +124,16 @@ class Card # rubocop:disable Metrics/ClassLength
     Card.possible_ranks[Card.possible_ranks.index(current_value) + 1]
   end
 
+  # TODO: need to determine if a card could be the first card in a run
   # Can the current card be played next in a run
-  # TODO: this may belong in the Run class
-  # TODO: the suit check may be a bit much here
   def next?(prev_card)
     return false unless same_suit?(prev_card)
 
-    rank == prev_card.rank + 1
+    if ace?
+      possible_values.include?(prev_card.next_value)
+    else
+      rank == prev_card.rank + 1
+    end
   end
 
   def points
@@ -149,6 +156,10 @@ class Card # rubocop:disable Metrics/ClassLength
 
   def same_suit?(card)
     current_suit == card.current_suit
+  end
+
+  def special?
+    ace? || wild?
   end
 
   def wild?

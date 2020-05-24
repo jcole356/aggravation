@@ -7,12 +7,22 @@ class Ace < Card
     @current_value = nil
   end
 
+  def ace?
+    true
+  end
+
   def current_value(value = nil)
-    @current_value ||= value
+    @current_value = value if possible_values.include?(value)
+
+    @current_value
   end
 
   def points
     15
+  end
+
+  def possible_values
+    [Card::VALUES[:ace], Card::SPECIAL[:ace_high]]
   end
 
   def rank

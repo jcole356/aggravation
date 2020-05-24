@@ -9,7 +9,7 @@ RSpec.describe 'Player' do
   let(:set) { build(:hand_set, num_cards: 3) }
 
   # TODO: test that you cannot discard a swap
-  describe 'Player#discard' do
+  describe 'discard' do
     let(:hand) { build(:player_hand, cards: cards, sets: [set]) }
     let(:player) { build(:player) }
 

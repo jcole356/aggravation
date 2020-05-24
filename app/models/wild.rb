@@ -8,10 +8,12 @@ class Wild < Card
     @current_value = nil
   end
 
+  # TODO: not sure these are working correctly
   def current_suit(suit = nil)
     @current_suit ||= suit
   end
 
+  # TODO: not sure these are working correctly
   def current_value(value = nil)
     @current_value ||= value
   end

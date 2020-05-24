@@ -153,14 +153,14 @@ RSpec.describe 'Card::rank' do
     expect(card.rank).to eq(3)
   end
 
-  it 'returns the correct rank of an ace low' do
+  it 'returns the correct rank of an ace low', focus: true do
     card = build(:ace)
     card.current_value(Card::VALUES[:ace])
 
     expect(card.rank).to eq(1)
   end
 
-  it 'returns the correct rank of an ace high' do
+  it 'returns the correct rank of an ace high', focus: true do
     card = build(:ace)
     card.current_value(Card::SPECIAL[:ace_high])
 

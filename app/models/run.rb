@@ -24,9 +24,9 @@ class Run < PlayerPile
   def play(card)
     raise('Invalid Move') && return unless valid_move?(card)
 
-    if card.wild?
-      card.current_suit(@suit)
-      card.current_value(last_card.next_value)
+    # TODO: validate that this is a valid choice
+    if card.special?
+      play_special(card)
     else
       @suit ||= card.suit
     end
@@ -34,20 +34,39 @@ class Run < PlayerPile
     cards << card
   end
 
+  # TODO: figure out how to prompt the user for interaction (high/low)
+  # - Figure out if it's high or low
+  # - Determine if it's a valid play
+  def play_ace(card)
+    if cards.empty?
+      card.current_value
+    else
+      card.current_value(Card::SPECIAL[:ace_high])
+    end
+    @suit ||= card.suit
+  end
+
+  def play_special(card)
+    if card.ace?
+      play_ace(card)
+    else
+      play_wild(card)
+    end
+  end
+
+  def play_wild
+    card.current_value(last_card.next_value)
+    card.current_suit(@suit)
+  end
+
   def reset
     super
     @suit = nil
   end
 
-  # TODO: TDD
   # TODO: prevent wild from representing an invalid card value (high or low)
   # May need to prompt high/low for wild (and in rare edge cases for Aces)
   def valid_move?(card)
-    # TODO: can't enforce this (second card may need to be wild)
-    # if cards.length < 2
-    #   return false if card.wild?
-    # end
-
     return true if cards.empty?
 
     card.wild? || card.suit == suit && card.next?(last_card)
