@@ -25,11 +25,8 @@ class Run < PlayerPile
     raise('Invalid Move') && return unless valid_move?(card)
 
     # TODO: validate that this is a valid choice
-    if card.special?
-      play_special(card)
-    else
-      @suit ||= card.suit
-    end
+    play_special(card) if card.special?
+    @suit ||= card.suit unless card.wild?
 
     cards << card
   end
@@ -43,7 +40,6 @@ class Run < PlayerPile
     else
       card.current_value(Card::SPECIAL[:ace_high])
     end
-    @suit ||= card.suit
   end
 
   def play_special(card)
