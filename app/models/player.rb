@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Class for player logic
-class Player
+class Player # rubocop:disable Metrics/ClassLength
   attr_reader :name, :game, :score, :current_hand
   attr_accessor :turn
 

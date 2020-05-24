@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :hand_set do
-
     transient do
       cards { [] }
       value { nil }

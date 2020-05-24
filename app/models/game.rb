@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Class for game logic
-class Game
+class Game # rubocop:disable Metrics/ClassLength
   attr_reader :players, :deck, :pile, :status, :current_player_idx, :turn, :hand
 
   # TODO: figure out how many players require a third deck
