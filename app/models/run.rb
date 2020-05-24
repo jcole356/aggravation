@@ -36,7 +36,7 @@ class Run < PlayerPile
   # - Determine if it's a valid play
   def play_ace(card)
     if cards.empty?
-      card.current_value
+      card.current_value(Card::VALUES[:ace])
     else
       card.current_value(Card::SPECIAL[:ace_high])
     end
@@ -50,7 +50,7 @@ class Run < PlayerPile
     end
   end
 
-  def play_wild
+  def play_wild(card)
     card.current_value(last_card.next_value)
     card.current_suit(@suit)
   end
