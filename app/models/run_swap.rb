@@ -15,8 +15,6 @@ class RunSwap < Swap
 
   # Validate the swap
   def valid?(pile, card1, card2)
-    return false unless super
-
-    pile.suit == card1.suit
+    super && pile.suit == card1.suit
   end
 end

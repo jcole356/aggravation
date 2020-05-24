@@ -13,8 +13,6 @@ class SetSwap < Swap
 
   # Validate the swap
   def valid?(pile, card1, card2)
-    return false unless super
-
-    pile.value == card1.value
+    super && pile.value == card1.value
   end
 end
