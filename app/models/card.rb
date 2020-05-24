@@ -3,7 +3,6 @@
 # Class for building decks and card logic
 class Card # rubocop:disable Metrics/ClassLength
   attr_reader :suit, :value
-  attr_accessor :path
 
   SUITS = {
     diamonds: 'D',
@@ -40,7 +39,6 @@ class Card # rubocop:disable Metrics/ClassLength
   def initialize(suit, value)
     @suit = suit
     @value = value
-    @path = []
   end
 
   def self.special
