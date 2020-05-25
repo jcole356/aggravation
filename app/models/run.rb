@@ -18,6 +18,7 @@ class Run < PlayerPile
     @cards.last
   end
 
+  # TODO: should all some specs for this
   # TODO: need to figure out how to play on either end of the run
   # TODO: for each wild card played, you need to retroatively fix the value and suit of each
   # Once the suit is set.  Work backwards from the first normal card and set the values of the wilds
@@ -28,7 +29,8 @@ class Run < PlayerPile
     play_special(card) if card.special?
     @suit ||= card.suit unless card.wild?
 
-    cards << card
+    cards << card if cards.empty? || valid_next?(card)
+    cards.unshift(card) if valid_previous?(card)
   end
 
   # TODO: figure out how to prompt the user for interaction (high/low)
@@ -63,8 +65,16 @@ class Run < PlayerPile
   # TODO: prevent wild from representing an invalid card value (high or low)
   # May need to prompt high/low for wild (and in rare edge cases for Aces)
   def valid_move?(card)
-    return true if cards.empty?
+    return true if cards.empty? || card.wild?
 
-    card.wild? || card.suit == suit && card.next?(last_card)
+    card.suit == suit && (valid_next?(card) || valid_previous?(card))
+  end
+
+  def valid_next?(card)
+    card.next?(last_card)
+  end
+
+  def valid_previous?(card)
+    card.previous?(first_card)
   end
 end

@@ -140,6 +140,17 @@ class Card # rubocop:disable Metrics/ClassLength
     rank > 7 ? 10 : 5
   end
 
+  # Can the current card be played first in a run
+  def previous?(next_card)
+    return false unless same_suit?(next_card)
+
+    if ace?
+      possible_values.include?(next_card.next_value)
+    else
+      rank == next_card.rank - 1
+    end
+  end
+
   # Actual rank of card
   def rank(current_value = value)
     value_idx = Card.possible_ranks.index(current_value)
