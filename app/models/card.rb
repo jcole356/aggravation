@@ -151,6 +151,10 @@ class Card # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def previous_value
+    Card.possible_ranks[Card.possible_ranks.index(current_value) - 1]
+  end
+
   # Actual rank of card
   def rank(current_value = value)
     value_idx = Card.possible_ranks.index(current_value)

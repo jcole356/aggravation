@@ -11,7 +11,8 @@ FactoryBot.define do
 
     after(:build) do |model, evaluator|
       cards = evaluator.cards
-      model.instance_variable_set(:@suit, cards.first.suit) unless cards.empty?
+      suit = cards.empty? || cards.first.wild? ? nil : cards.first.suit
+      model.instance_variable_set(:@suit, suit)
       model.instance_variable_set(:@cards, cards)
     end
   end

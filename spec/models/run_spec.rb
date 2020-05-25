@@ -1,23 +1,93 @@
 # frozen_string_literal: true
 
+# rubocop:disable Lint/MissingCopEnableDirective
+# rubocop:disable Metrics/BlockLength
+
 RSpec.describe 'Run' do
-  # let(:card1) { build(:card) }
-  let(:card2) { build(:card, value: Card::VALUES[:six]) }
-  let(:card3) { build(:card, value: Card::VALUES[:seven]) }
-  let(:card4) { build(:card, value: Card::VALUES[:eight]) }
-  let(:card5) { build(:card, value: Card::VALUES[:nine]) }
-  # let(:card6) { build(:card, value: Card::VALUES[:ten]) }
-  # let(:card7) { build(:card, value: Card::VALUES[:jack]) }
-  # let(:wild) { build(:wild) }
-  let(:run) { build(:run, num_cards: 5, cards: [card4]) }
+  let(:ace) { build(:ace) }
+  let(:card1) { build(:card, value: Card::VALUES[:six]) }
+  let(:card2) { build(:card, value: Card::VALUES[:seven]) }
+  let(:card3) { build(:card, value: Card::VALUES[:eight]) }
+  let(:card4) { build(:card, value: Card::VALUES[:nine]) }
+  let(:wild1) { build(:wild) }
+  let(:wild2) { build(:wild) }
+  let(:wild3) { build(:wild) }
+
+  describe 'play' do
+    context 'when the run is empty' do
+      let!(:run) { build(:run, num_cards: 5) }
+
+      it 'plays a wild card, without setting current value or suit' do
+        run.play(wild1)
+        expect(wild1.current_value).to eq(nil)
+        expect(run.suit).to eq(nil)
+      end
+
+      it 'plays a an ace, and sets the value as ace_low' do
+        run.play(ace)
+        expect(ace.current_value).to eq(Card::VALUES[:ace])
+        expect(run.suit).to eq(ace.suit)
+      end
+    end
+
+    context 'when the run has a wild card' do
+      let!(:run) { build(:run, num_cards: 5, cards: [wild1]) }
+
+      it 'plays another wild card, without setting current value or suit' do
+        run.play(wild2)
+        expect(wild2.current_value).to eq(nil)
+        expect(wild2.current_suit).to eq(nil)
+        expect(run.suit).to eq(nil)
+      end
+
+      it 'plays a face card and sets the previous wild card' do
+        expect(wild1.current_value).to eq(nil)
+        expect(wild1.current_suit).to eq(nil)
+        run.play(card1)
+        expect(run.suit).to eq(card1.suit)
+        expect(wild1.current_value).to eq(card1.previous_value)
+        expect(wild1.current_suit).to eq(card1.suit)
+      end
+    end
+
+    context 'when the run has multiple wild cards' do
+      let!(:run) { build(:run, num_cards: 5, cards: [wild1, wild2]) }
+
+      it 'plays another wild card, without setting current value or suit' do
+        run.play(wild3)
+        expect(wild3.current_value).to eq(nil)
+        expect(wild3.current_suit).to eq(nil)
+        expect(wild2.current_value).to eq(nil)
+        expect(wild2.current_suit).to eq(nil)
+        expect(wild1.current_value).to eq(nil)
+        expect(wild1.current_suit).to eq(nil)
+        expect(run.suit).to eq(nil)
+      end
+
+      it 'plays a face card and sets the previous wild cards' do
+        expect(wild1.current_value).to eq(nil)
+        expect(wild1.current_suit).to eq(nil)
+        expect(wild2.current_value).to eq(nil)
+        expect(wild2.current_suit).to eq(nil)
+        run.play(card1)
+        expect(run.suit).to eq(card1.suit)
+        expect(wild2.current_value).to eq(card1.previous_value)
+        expect(wild2.current_suit).to eq(card1.suit)
+        expect(wild1.current_value).to eq(wild2.previous_value)
+        expect(wild1.current_suit).to eq(wild2.suit)
+      end
+    end
+  end
 
   describe 'valid_move?' do
+    let!(:run) { build(:run, num_cards: 5, cards: [card3]) }
+
     it 'allows a player to play the next card in a run' do
-      expect(run.valid_move?(card5)).to eq(true)
+      expect(run.valid_move?(card4)).to eq(true)
     end
 
     it 'allows a player to play the previous card in a run' do
-      expect(run.valid_move?(card3)).to eq(true)
+      expect(run.valid_move?(card2)).to eq(true)
     end
   end
 end

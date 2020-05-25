@@ -10,6 +10,20 @@ class Run < PlayerPile
     @same_suit = same_suit
   end
 
+  # Find all the wild cards that were played, assign them appropriately
+  # TODO: this probably needs to work in both directions
+  def assign_wilds(card)
+    cards.last.current_value(card.previous_value)
+    cards.last.current_suit(card.suit)
+
+    idx = cards.length - 2
+    while idx >= 0
+      cards[idx].current_suit(card.suit)
+      cards[idx].current_value(cards[idx + 1].previous_value)
+      idx -= 1
+    end
+  end
+
   def first_card
     @cards.first
   end
@@ -19,18 +33,28 @@ class Run < PlayerPile
   end
 
   # TODO: should all some specs for this
+  # TODO: need to verify that the proper amount of natural cards have been played
   # TODO: need to figure out how to play on either end of the run
   # TODO: for each wild card played, you need to retroatively fix the value and suit of each
   # Once the suit is set.  Work backwards from the first normal card and set the values of the wilds
   def play(card)
     raise('Invalid Move') && return unless valid_move?(card)
 
-    # TODO: validate that this is a valid choice
     play_special(card) if card.special?
-    @suit ||= card.suit unless card.wild?
 
-    cards << card if cards.empty? || valid_next?(card)
-    cards.unshift(card) if valid_previous?(card)
+    # Set the suit unless the card is wild
+    # Loop through all the wilds to fix
+    if @suit.nil? && !card.wild?
+      @suit = card.suit
+      assign_wilds(card) unless cards.empty?
+    end
+
+    # TODO: until we accept an option here, we need to only do one
+    if cards.empty? || valid_next?(card)
+      cards << card
+    elsif valid_previous?(card)
+      cards.unshift(card)
+    end
   end
 
   # TODO: figure out how to prompt the user for interaction (high/low)
@@ -52,9 +76,10 @@ class Run < PlayerPile
     end
   end
 
+  # TODO: this breaks for consecutive wilds
   def play_wild(card)
-    card.current_value(last_card.next_value)
-    card.current_suit(@suit)
+    card.current_value(last_card.next_value) unless cards.empty? || @suit.nil?
+    card.current_suit(@suit) if @suit
   end
 
   def reset
@@ -65,16 +90,16 @@ class Run < PlayerPile
   # TODO: prevent wild from representing an invalid card value (high or low)
   # May need to prompt high/low for wild (and in rare edge cases for Aces)
   def valid_move?(card)
-    return true if cards.empty? || card.wild?
+    return true if cards.empty? || card.wild? || @suit.nil?
 
     card.suit == suit && (valid_next?(card) || valid_previous?(card))
   end
 
   def valid_next?(card)
-    card.next?(last_card)
+    card.wild? || card.next?(last_card)
   end
 
   def valid_previous?(card)
-    card.previous?(first_card)
+    card.wild? || card.previous?(first_card)
   end
 end
