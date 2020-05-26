@@ -143,6 +143,10 @@ class Card # rubocop:disable Metrics/ClassLength
 
   # Can the current card be played first in a run
   def previous?(next_card)
+    return false if next_card.current_value == Card::VALUES[:ace]
+
+    return true if wild?
+
     return false unless same_suit?(next_card)
 
     if ace?

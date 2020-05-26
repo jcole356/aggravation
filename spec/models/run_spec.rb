@@ -118,4 +118,18 @@ RSpec.describe 'Run' do
       end
     end
   end
+
+  describe 'valid_previous?' do
+    let!(:run) { build(:run, num_cards: 5, cards: [ace]) }
+
+    before do
+      ace.current_value(Card::VALUES[:ace])
+    end
+
+    context 'when there is already an ace_low' do
+      it 'returns false' do
+        expect(run.valid_previous?(wild1)).to eq(false)
+      end
+    end
+  end
 end

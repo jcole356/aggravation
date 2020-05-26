@@ -99,8 +99,7 @@ class Run < PlayerPile
     card.next?(last_card)
   end
 
-  # TODO
   def valid_previous?(card)
-    card.wild? || card.previous?(first_card)
+    card.previous?(first_card)
   end
 end
