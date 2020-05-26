@@ -5,6 +5,7 @@
 
 RSpec.describe 'Run' do
   let(:ace) { build(:ace) }
+  let(:ace2) { build(:ace) }
   let(:card1) { build(:card, value: Card::VALUES[:six]) }
   let(:card2) { build(:card, value: Card::VALUES[:seven]) }
   let(:card3) { build(:card, value: Card::VALUES[:eight]) }
@@ -88,6 +89,33 @@ RSpec.describe 'Run' do
 
     it 'allows a player to play the previous card in a run' do
       expect(run.valid_move?(card2)).to eq(true)
+    end
+
+    context 'when a run already has an ace high' do
+      let!(:run) { build(:run, num_cards: 5, cards: [ace]) }
+
+      before do
+        ace.current_value(Card::SPECIAL[:ace_high])
+      end
+
+      it 'does not allow you to play another ace' do
+        expect(ace.current_value).to eq(Card::SPECIAL[:ace_high])
+        expect(run.valid_move?(ace2)).to eq(false)
+      end
+    end
+  end
+
+  describe 'valid_next?' do
+    let!(:run) { build(:run, num_cards: 5, cards: [ace]) }
+
+    before do
+      ace.current_value(Card::SPECIAL[:ace_high])
+    end
+
+    context 'when there is already an ace_high' do
+      it 'returns false' do
+        expect(run.valid_next?(wild1)).to eq(false)
+      end
     end
   end
 end

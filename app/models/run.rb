@@ -90,15 +90,16 @@ class Run < PlayerPile
   # TODO: prevent wild from representing an invalid card value (high or low)
   # May need to prompt high/low for wild (and in rare edge cases for Aces)
   def valid_move?(card)
-    return true if cards.empty? || card.wild? || @suit.nil?
+    return true if cards.empty? || @suit.nil?
 
     card.suit == suit && (valid_next?(card) || valid_previous?(card))
   end
 
   def valid_next?(card)
-    card.wild? || card.next?(last_card)
+    card.next?(last_card)
   end
 
+  # TODO
   def valid_previous?(card)
     card.wild? || card.previous?(first_card)
   end

@@ -118,15 +118,16 @@ class Card # rubocop:disable Metrics/ClassLength
     wild? || current_value == card.current_value
   end
 
-  # TODO: validate this is a valid rank
-  # TODO: test for edge cases
   def next_value
     Card.possible_ranks[Card.possible_ranks.index(current_value) + 1]
   end
 
-  # TODO: need to determine if a card could be the first card in a run
   # Can the current card be played next in a run
   def next?(prev_card)
+    return false if prev_card.current_value == Card::SPECIAL[:ace_high]
+
+    return true if wild?
+
     return false unless same_suit?(prev_card)
 
     if ace?
