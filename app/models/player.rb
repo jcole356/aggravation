@@ -26,12 +26,12 @@ class Player # rubocop:disable Metrics/ClassLength
     !hand.down && game.pile.can_draw_from_pile?
   end
 
-  def can_borrow_from_others_hand?(other_player_idx)
-    !hand.down && game.players[other_player_idx].hand.down
+  def can_borrow_from_others_hand?(other_player, pile)
+    (!hand.down || pile.type == Run) && other_player.down?
   end
 
-  def can_play_on_others_hand?(other_player_idx)
-    hand.down && game.players[other_player_idx].hand.down
+  def can_play_on_others_hand?(other_player)
+    hand.down && other_player.down?
   end
 
   # TODO: If you undo swaps, you cannot allow the discard to finish
@@ -46,6 +46,10 @@ class Player # rubocop:disable Metrics/ClassLength
     hand.remove_card(card)
     game.hand.end if hand.out?
     game.discard(card)
+  end
+
+  def down?
+    hand.down
   end
 
   def draw_from_deck
@@ -88,12 +92,13 @@ class Player # rubocop:disable Metrics/ClassLength
 
   # Borrow is missing the other players card_idx
   def play_on_others_hand(pile_idx, card_idx, other_player_idx, other_card_idx)
-    piles = game.players[other_player_idx].hand.piles
+    other_player = game.get_player(other_player_idx)
+    piles = other_player.hand.piles
     pile = piles[pile_idx]
 
-    if can_play_on_others_hand?(other_player_idx)
+    if can_play_on_others_hand?(other_player)
       play_card(pile, card_idx)
-    elsif can_borrow_from_others_hand?(other_player_idx)
+    elsif can_borrow_from_others_hand?(other_player, pile)
       args = {
         game: game,
         card1_coords: [game.current_player_idx, card_idx],

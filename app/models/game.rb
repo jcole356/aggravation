@@ -63,6 +63,10 @@ class Game # rubocop:disable Metrics/ClassLength
     pile.draw
   end
 
+  def get_player(idx)
+    players[idx]
+  end
+
   def next_hand
     @dealer_idx += 1
     @players.each do |player|
