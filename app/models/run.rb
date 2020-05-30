@@ -92,9 +92,10 @@ class Run < PlayerPile
   def valid_move?(card)
     return true if cards.empty? || @suit.nil?
 
-    card.suit == suit && (valid_next?(card) || valid_previous?(card))
+    valid_next?(card) || valid_previous?(card)
   end
 
+  # TODO: check for size of run
   def valid_next?(card)
     card.next?(last_card)
   end
