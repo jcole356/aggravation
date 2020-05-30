@@ -15,7 +15,7 @@ class Swap
 
   # Execute the swap
   def execute
-    return unless valid?(@pile, @card1, @card2)
+    return false unless valid?(@pile, @card1, @card2)
 
     @player1.remove_card_from_hand(@card1)
     card2_idx = @pile.find_card(@card2)
@@ -23,6 +23,7 @@ class Swap
     @pile.cards.insert(card2_idx, @card1)
     @card2.reset
     @player1.hand.cards << @card2
+    true
   end
 
   # Validate the swap
