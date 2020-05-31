@@ -13,6 +13,7 @@ class Run < PlayerPile
   # Find all the wild cards that were played, assign them appropriately
   # TODO: this probably needs to work in both directions
   def assign_wilds(card)
+    puts 'ASSIGN WILDS'
     cards.last.current_value(card.previous_value)
     cards.last.current_suit(card.suit)
 
@@ -76,7 +77,8 @@ class Run < PlayerPile
     end
   end
 
-  # TODO: this breaks for consecutive wilds
+  # TODO: when wild is played at the beginning of a hand it's current value is never set
+  # TOOD: playing wild high/low is the next step
   def play_wild(card)
     card.current_value(last_card.next_value) unless cards.empty? || @suit.nil?
     card.current_suit(@suit) if @suit

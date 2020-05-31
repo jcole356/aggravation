@@ -27,10 +27,6 @@ class Wild < Card
     20
   end
 
-  def rank
-    super(current_value)
-  end
-
   def reset
     @current_suit = nil
     @current_value = nil

@@ -24,8 +24,4 @@ class Ace < Card
   def possible_values
     [Card::VALUES[:ace], Card::SPECIAL[:ace_high]]
   end
-
-  def rank
-    super(current_value)
-  end
 end

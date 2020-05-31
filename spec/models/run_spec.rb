@@ -117,6 +117,19 @@ RSpec.describe 'Run' do
         expect(run.valid_next?(wild1)).to eq(false)
       end
     end
+
+    context 'when the last card is a wild' do
+      let!(:run) { build(:run, num_cards: 4, cards: [card1, card2, wild1]) }
+
+      before do
+        wild1.current_value(Card::VALUES[:eight])
+        wild1.current_suit(card2.suit)
+      end
+
+      it 'returns true if next card is in correct sequence' do
+        expect(run.valid_next?(card4)).to eq(true)
+      end
+    end
   end
 
   describe 'valid_previous?' do

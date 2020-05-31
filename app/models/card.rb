@@ -133,6 +133,7 @@ class Card # rubocop:disable Metrics/ClassLength
     if ace?
       possible_values.include?(prev_card.next_value)
     else
+      puts 'CHECKING RANK IN NEXT'
       rank == prev_card.rank + 1
     end
   end
@@ -152,6 +153,7 @@ class Card # rubocop:disable Metrics/ClassLength
     if ace?
       possible_values.include?(next_card.next_value)
     else
+      puts 'CHECKING RANK IN PREVIOUS'
       rank == next_card.rank - 1
     end
   end
@@ -161,7 +163,10 @@ class Card # rubocop:disable Metrics/ClassLength
   end
 
   # Actual rank of card
-  def rank(current_value = value)
+  def rank
+    puts 'RANK'
+    puts self
+    puts current_value
     value_idx = Card.possible_ranks.index(current_value)
     ranks[value_idx]
   end
@@ -175,7 +180,10 @@ class Card # rubocop:disable Metrics/ClassLength
   end
 
   def same_suit?(card)
-    current_suit == card.current_suit
+    result = current_suit == card.current_suit
+    puts 'SAME SUIT'
+    puts result
+    result
   end
 
   def special?
