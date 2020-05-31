@@ -2,7 +2,6 @@ import { play, playHandler, state } from "../app";
 import Card from "./card";
 import { createElementWithClass } from "../utils";
 
-// Set this on all piles except your own
 function cardTargetSelectHandler(e) {
   e.stopPropagation();
   const currentTarget = e.currentTarget;
@@ -26,8 +25,7 @@ const render = ({ cards, label }, idx, playerIdx) => {
   const pileLabel = createElementWithClass("div", "hand-pile-label");
   pileLabel.append(label);
   const pileCards = createElementWithClass("div", "hand-pile-cards");
-  const handler =
-    playerIdx === state.currentPlayer ? null : cardTargetSelectHandler;
+  const handler = cardTargetSelectHandler;
   cards.forEach((card, idx) => {
     pileCards.append(Card(card, idx, handler));
   });
