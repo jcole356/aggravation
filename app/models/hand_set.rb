@@ -9,7 +9,7 @@ class HandSet < PlayerPile
     @value = nil
   end
 
-  def play(card)
+  def play(card, _other_card_index = nil)
     raise('Invalid Move') && return unless valid_move?(card)
 
     @value ||= card.value

@@ -38,10 +38,13 @@ class Run < PlayerPile
   # TODO: need to figure out how to play on either end of the run
   # TODO: for each wild card played, you need to retroatively fix the value and suit of each
   # Once the suit is set.  Work backwards from the first normal card and set the values of the wilds
-  def play(card)
+  def play(card, other_card_index)
     raise('Invalid Move') && return unless valid_move?(card)
 
-    play_special(card) if card.special?
+    # TODO: only valid where choice is granted
+    low = other_card_index == 0 && card.wild? # rubocop:disable Style/NumericPredicate
+
+    play_special(card, low) if card.special?
 
     # Set the suit unless the card is wild
     # Loop through all the wilds to fix
@@ -50,8 +53,7 @@ class Run < PlayerPile
       assign_wilds(card) unless cards.empty?
     end
 
-    # TODO: until we accept an option here, we need to only do one
-    if cards.empty? || valid_next?(card)
+    if cards.empty? || valid_next?(card) && !low
       cards << card
     elsif valid_previous?(card)
       cards.unshift(card)
@@ -69,18 +71,17 @@ class Run < PlayerPile
     end
   end
 
-  def play_special(card)
+  def play_special(card, low)
     if card.ace?
       play_ace(card)
     else
-      play_wild(card)
+      play_wild(card, low)
     end
   end
 
-  # TODO: when wild is played at the beginning of a hand it's current value is never set
-  # TOOD: playing wild high/low is the next step
-  def play_wild(card)
-    card.current_value(last_card.next_value) unless cards.empty? || @suit.nil?
+  def play_wild(card, low)
+    new_value = low ? first_card.previous_value : last_card.next_value
+    card.current_value(new_value) unless cards.empty? || @suit.nil?
     card.current_suit(@suit) if @suit
   end
 

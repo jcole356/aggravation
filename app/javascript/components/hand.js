@@ -1,4 +1,4 @@
-import Card from "../components/card";
+import Card from "./card";
 import { createElementWithClass } from "../utils"
 
 const render = (cards, isCurrentPlayer) => {

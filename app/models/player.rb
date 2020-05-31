@@ -96,15 +96,15 @@ class Player # rubocop:disable Metrics/ClassLength
     end
 
     puts 'PLAYING ON OWN HAND'
-    play_card(pile, card_idx)
+    play_card(pile, card_idx, other_card_idx)
     game.hand.end if hand.out?
     hand.validate
   end
 
-  def play_card(pile, card_idx)
+  def play_card(pile, card_idx, other_card_idx)
     card = hand.select_card(card_idx)
     begin
-      pile.play(card)
+      pile.play(card, other_card_idx)
     rescue StandardError => e
       puts e
       return

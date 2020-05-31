@@ -4,7 +4,7 @@ import {
   startHandler,
   state as appState,
 } from "../app";
-import Card from "../components/card";
+import Card from "./card";
 import Player from "../components/player";
 
 // Renders the top card of the discard pile

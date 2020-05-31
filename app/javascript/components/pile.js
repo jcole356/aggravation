@@ -11,7 +11,7 @@ function cardTargetSelectHandler(e) {
     return;
   }
   state.targetCard = idx;
-  const pileNode = currentTarget.parentNode.parentNode;
+  const pileNode = currentTarget.closest(".hand-pile");
   const pileIdx = pileNode.getAttribute("data-idx");
   const playerIdx = pileNode.getAttribute("data-player-idx");
   play(playerIdx, pileIdx, idx);
@@ -26,8 +26,8 @@ const render = ({ cards, label }, idx, playerIdx) => {
   pileLabel.append(label);
   const pileCards = createElementWithClass("div", "hand-pile-cards");
   const handler = cardTargetSelectHandler;
-  cards.forEach((card, idx) => {
-    pileCards.append(Card(card, idx, handler));
+  cards.forEach((card, idx, cards) => {
+    pileCards.append(Card(card, idx, handler, cards.length));
   });
   pileDiv.append(pileLabel);
   pileDiv.append(pileCards);
