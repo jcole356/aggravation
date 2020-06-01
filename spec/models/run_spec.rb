@@ -13,19 +13,20 @@ RSpec.describe 'Run' do
   let(:wild1) { build(:wild) }
   let(:wild2) { build(:wild) }
   let(:wild3) { build(:wild) }
+  let!(:other_card_idx) { rand(5) }
 
   describe 'play' do
     context 'when the run is empty' do
       let!(:run) { build(:run, num_cards: 5) }
 
       it 'plays a wild card, without setting current value or suit' do
-        run.play(wild1)
+        run.play(wild1, 0)
         expect(wild1.current_value).to eq(nil)
         expect(run.suit).to eq(nil)
       end
 
       it 'plays a an ace, and sets the value as ace_low' do
-        run.play(ace)
+        run.play(ace, other_card_idx)
         expect(ace.current_value).to eq(Card::VALUES[:ace])
         expect(run.suit).to eq(ace.suit)
       end
@@ -35,7 +36,7 @@ RSpec.describe 'Run' do
       let!(:run) { build(:run, num_cards: 5, cards: [wild1]) }
 
       it 'plays another wild card, without setting current value or suit' do
-        run.play(wild2)
+        run.play(wild2, other_card_idx)
         expect(wild2.current_value).to eq(nil)
         expect(wild2.current_suit).to eq(nil)
         expect(run.suit).to eq(nil)
@@ -44,7 +45,7 @@ RSpec.describe 'Run' do
       it 'plays a face card and sets the previous wild card' do
         expect(wild1.current_value).to eq(nil)
         expect(wild1.current_suit).to eq(nil)
-        run.play(card1)
+        run.play(card1, other_card_idx)
         expect(run.suit).to eq(card1.suit)
         expect(wild1.current_value).to eq(card1.previous_value)
         expect(wild1.current_suit).to eq(card1.suit)
@@ -55,7 +56,7 @@ RSpec.describe 'Run' do
       let!(:run) { build(:run, num_cards: 5, cards: [wild1, wild2]) }
 
       it 'plays another wild card, without setting current value or suit' do
-        run.play(wild3)
+        run.play(wild3, other_card_idx)
         expect(wild3.current_value).to eq(nil)
         expect(wild3.current_suit).to eq(nil)
         expect(wild2.current_value).to eq(nil)
@@ -70,7 +71,7 @@ RSpec.describe 'Run' do
         expect(wild1.current_suit).to eq(nil)
         expect(wild2.current_value).to eq(nil)
         expect(wild2.current_suit).to eq(nil)
-        run.play(card1)
+        run.play(card1, other_card_idx)
         expect(run.suit).to eq(card1.suit)
         expect(wild2.current_value).to eq(card1.previous_value)
         expect(wild2.current_suit).to eq(card1.suit)

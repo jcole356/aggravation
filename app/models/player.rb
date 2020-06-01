@@ -134,7 +134,7 @@ class Player # rubocop:disable Metrics/ClassLength
     end
 
     puts 'PLAYING ON OTHERS HAND'
-    play_card(pile, card_idx) if can_play_on_others_hand?(other_player)
+    play_card(pile, card_idx, other_card_idx) if can_play_on_others_hand?(other_player)
   end
 
   def remove_card_from_hand(card)

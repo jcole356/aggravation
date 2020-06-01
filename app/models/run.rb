@@ -79,9 +79,12 @@ class Run < PlayerPile
     end
   end
 
+  # TODO: checking whether or not it's empty might be redundant (no suit)
   def play_wild(card, low)
-    new_value = low ? first_card.previous_value : last_card.next_value
-    card.current_value(new_value) unless cards.empty? || @suit.nil?
+    unless cards.empty? || @suit.nil?
+      new_value = low ? first_card.previous_value : last_card.next_value
+      card.current_value(new_value)
+    end
     card.current_suit(@suit) if @suit
   end
 
