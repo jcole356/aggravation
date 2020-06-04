@@ -91,9 +91,13 @@ button {
 
 .card {
   @include card-dimensions;
+  cursor: pointer;
   display: block;
   float: left;
   margin: 5px 0;
+  .value {
+    height: 18px;
+  }
   &.d,
   &.h {
     color: red;
@@ -124,6 +128,7 @@ button {
 
 .suit-joker {
   display: none;
+  height: 18px;
 }
 
 .hidden {

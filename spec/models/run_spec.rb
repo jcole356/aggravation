@@ -45,7 +45,7 @@ RSpec.describe 'Run' do
       it 'plays a face card and sets the previous wild card' do
         expect(wild1.current_value).to eq(nil)
         expect(wild1.current_suit).to eq(nil)
-        run.play(card1, other_card_idx)
+        run.play(card1, 1)
         expect(run.suit).to eq(card1.suit)
         expect(wild1.current_value).to eq(card1.previous_value)
         expect(wild1.current_suit).to eq(card1.suit)
@@ -71,7 +71,7 @@ RSpec.describe 'Run' do
         expect(wild1.current_suit).to eq(nil)
         expect(wild2.current_value).to eq(nil)
         expect(wild2.current_suit).to eq(nil)
-        run.play(card1, other_card_idx)
+        run.play(card1, 1)
         expect(run.suit).to eq(card1.suit)
         expect(wild2.current_value).to eq(card1.previous_value)
         expect(wild2.current_suit).to eq(card1.suit)

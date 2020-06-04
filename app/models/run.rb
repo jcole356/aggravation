@@ -11,9 +11,13 @@ class Run < PlayerPile
   end
 
   # Find all the wild cards that were played, assign them appropriately
-  # TODO: this probably needs to work in both directions
-  def assign_wilds(card)
+  def assign_wilds(card, low)
     puts 'ASSIGN WILDS'
+    puts low
+    low ? assign_wilds_forward(card) : assign_wilds_backwards(card)
+  end
+
+  def assign_wilds_backwards(card)
     cards.last.current_value(card.previous_value)
     cards.last.current_suit(card.suit)
 
@@ -22,6 +26,18 @@ class Run < PlayerPile
       cards[idx].current_suit(card.suit)
       cards[idx].current_value(cards[idx + 1].previous_value)
       idx -= 1
+    end
+  end
+
+  def assign_wilds_forward(card)
+    cards.first.current_value(card.next_value)
+    cards.first.current_suit(card.suit)
+
+    idx = 1
+    while idx > cards.length
+      cards[idx].current_suit(card.suit)
+      cards[idx].current_value(cards[idx + 1].previous_value)
+      idx += 1
     end
   end
 
@@ -41,8 +57,7 @@ class Run < PlayerPile
   def play(card, other_card_index)
     raise('Invalid Move') && return unless valid_move?(card)
 
-    # TODO: only valid where choice is granted
-    low = other_card_index == 0 && card.wild? # rubocop:disable Style/NumericPredicate
+    low = other_card_index == 0 && card.special? # rubocop:disable Style/NumericPredicate
 
     play_special(card, low) if card.special?
 
@@ -50,10 +65,12 @@ class Run < PlayerPile
     # Loop through all the wilds to fix
     if @suit.nil? && !card.wild?
       @suit = card.suit
-      assign_wilds(card) unless cards.empty?
+      assign_wilds(card, low) unless cards.empty?
     end
 
-    if cards.empty? || valid_next?(card) && !low
+    puts 'LOW'
+    puts low
+    if cards.empty? || (valid_next?(card) && !low)
       cards << card
     elsif valid_previous?(card)
       cards.unshift(card)
