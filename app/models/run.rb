@@ -34,9 +34,9 @@ class Run < PlayerPile
     cards.first.current_suit(card.suit)
 
     idx = 1
-    while idx > cards.length
+    while idx < cards.length
       cards[idx].current_suit(card.suit)
-      cards[idx].current_value(cards[idx + 1].previous_value)
+      cards[idx].current_value(cards[idx - 1].next_value)
       idx += 1
     end
   end
@@ -49,15 +49,11 @@ class Run < PlayerPile
     @cards.last
   end
 
-  # TODO: should all some specs for this
   # TODO: need to verify that the proper amount of natural cards have been played
-  # TODO: need to figure out how to play on either end of the run
-  # TODO: for each wild card played, you need to retroatively fix the value and suit of each
-  # Once the suit is set.  Work backwards from the first normal card and set the values of the wilds
   def play(card, other_card_index)
     raise('Invalid Move') && return unless valid_move?(card)
 
-    low = other_card_index == 0 && card.special? # rubocop:disable Style/NumericPredicate
+    low = other_card_index == 0 && (card.special? || @suit.nil?) # rubocop:disable Style/NumericPredicate
 
     play_special(card, low) if card.special?
 
@@ -77,11 +73,10 @@ class Run < PlayerPile
     end
   end
 
-  # TODO: figure out how to prompt the user for interaction (high/low)
-  # - Figure out if it's high or low
-  # - Determine if it's a valid play
-  def play_ace(card)
-    if cards.empty?
+  def play_ace(card, low)
+    puts 'PLAY_ACE'
+    puts low
+    if low
       card.current_value(Card::VALUES[:ace])
     else
       card.current_value(Card::SPECIAL[:ace_high])
@@ -90,7 +85,7 @@ class Run < PlayerPile
 
   def play_special(card, low)
     if card.ace?
-      play_ace(card)
+      play_ace(card, low)
     else
       play_wild(card, low)
     end
@@ -110,8 +105,6 @@ class Run < PlayerPile
     @suit = nil
   end
 
-  # TODO: prevent wild from representing an invalid card value (high or low)
-  # May need to prompt high/low for wild (and in rare edge cases for Aces)
   def valid_move?(card)
     return true if cards.empty? || @suit.nil?
 

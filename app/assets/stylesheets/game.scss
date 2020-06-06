@@ -51,33 +51,36 @@ button {
   width: auto;
   min-width: 63px; // TODO: add a var for this
   margin: 5px 5px 0 0;
+  .card-left {
+    float: left;
+    height: 100%;
+    margin-right: -50%;
+    position: relative;
+    right: 50%;
+    width: 100%;
+    &:hover {
+      background-color: blue;
+      opacity: .2;
+    }
+  }
+  .card-right {
+    float: left;
+    height: 100%;
+    margin-right: -50%;
+    position: relative;
+    width: 100%;
+    &:hover {
+      background-color: blue;
+      opacity: .2;
+    }
+  }
   .card {
     margin: 0;
     .card-left {
-      float: left;
-      height: 100%;
-      margin-right: -50%;
-      position: relative;
-      right: 50%;
       top: -37px;
-      width: 100%;
-      &:hover {
-        background-color: blue;
-        opacity: .2;
-      }
     }
     .card-right {
-      float: left;
-      height: 100%;
-      left: 50%;
-      margin-left: -50%;
-      position: relative;
       top: -37px;
-      width: 100%;
-      &:hover {
-        background-color: blue;
-        opacity: .2;
-      }
     }
   }
   .card:not(:last-of-type) {

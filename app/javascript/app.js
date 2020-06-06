@@ -29,22 +29,22 @@ export function drawFromPileHandler() {
   Socket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
 }
 
-// TODO: this is probably going to need to be broken up into more handlers
 export function playHandler(e) {
   const idx = e.currentTarget.getAttribute("data-idx");
   const playerIdx = e.currentTarget.getAttribute("data-player-idx");
+  const otherCardIdx = e.target.getAttribute("data-idx");
+  state.targetCard = otherCardIdx;
   Socket.send({
     action: "play",
     card_idx: parseInt(state.selectedCard, 10),
     pile_idx: parseInt(idx, 10),
     pile_player_idx: parseInt(playerIdx, 10),
-    player: state.currentPlayer, // Should this really live here?
-    target_card_idx: state.targetCard,
+    player: state.currentPlayer,
+    target_card_idx: parseInt(state.targetCard, 10),
   });
   state.targetCard = undefined;
 }
 
-// TODO: call this from different handlers
 export function play(playerIdx, pileIdx, cardIdx) {
   Socket.send({
     action: "play",

@@ -96,6 +96,7 @@ class Player # rubocop:disable Metrics/ClassLength
     end
 
     puts 'PLAYING ON OWN HAND'
+    puts other_card_idx
     play_card(pile, card_idx, other_card_idx)
     game.hand.end if hand.out?
     hand.validate

@@ -26,9 +26,43 @@ RSpec.describe 'Run' do
       end
 
       it 'plays a an ace, and sets the value as ace_low' do
-        run.play(ace, other_card_idx)
+        run.play(ace, 0)
         expect(ace.current_value).to eq(Card::VALUES[:ace])
         expect(run.suit).to eq(ace.suit)
+      end
+
+      it 'plays a an ace, and sets the value as ace_high' do
+        run.play(ace, 1)
+        expect(ace.current_value).to eq(Card::SPECIAL[:ace_high])
+        expect(run.suit).to eq(ace.suit)
+      end
+    end
+
+    context 'when the run has an ace high' do
+      let!(:run) { build(:run, num_cards: 5, cards: [ace]) }
+
+      before do
+        ace.current_value(Card::SPECIAL[:ace_high])
+      end
+
+      it 'plays a wild and sets it to the previous value' do
+        run.play(wild1, 0)
+        expect(wild1.current_value).to eq(Card::VALUES[:king])
+        expect(wild1.current_suit).to eq(ace.suit)
+      end
+    end
+
+    context 'when the run has an ace low' do
+      let!(:run) { build(:run, num_cards: 5, cards: [ace]) }
+
+      before do
+        ace.current_value(Card::VALUES[:ace])
+      end
+
+      it 'plays a wild and sets it to the previous value' do
+        run.play(wild1, 1)
+        expect(wild1.current_value).to eq(Card::VALUES[:two])
+        expect(wild1.current_suit).to eq(ace.suit)
       end
     end
 
@@ -42,12 +76,21 @@ RSpec.describe 'Run' do
         expect(run.suit).to eq(nil)
       end
 
-      it 'plays a face card and sets the previous wild card' do
+      it 'plays a face card high and sets the previous wild card' do
         expect(wild1.current_value).to eq(nil)
         expect(wild1.current_suit).to eq(nil)
         run.play(card1, 1)
         expect(run.suit).to eq(card1.suit)
         expect(wild1.current_value).to eq(card1.previous_value)
+        expect(wild1.current_suit).to eq(card1.suit)
+      end
+
+      it 'plays a face card low and sets the next wild card' do
+        expect(wild1.current_value).to eq(nil)
+        expect(wild1.current_suit).to eq(nil)
+        run.play(card1, 0)
+        expect(run.suit).to eq(card1.suit)
+        expect(wild1.current_value).to eq(card1.next_value)
         expect(wild1.current_suit).to eq(card1.suit)
       end
     end
@@ -66,7 +109,7 @@ RSpec.describe 'Run' do
         expect(run.suit).to eq(nil)
       end
 
-      it 'plays a face card and sets the previous wild cards' do
+      it 'plays a face card high and sets the previous wild cards' do
         expect(wild1.current_value).to eq(nil)
         expect(wild1.current_suit).to eq(nil)
         expect(wild2.current_value).to eq(nil)
@@ -77,6 +120,19 @@ RSpec.describe 'Run' do
         expect(wild2.current_suit).to eq(card1.suit)
         expect(wild1.current_value).to eq(wild2.previous_value)
         expect(wild1.current_suit).to eq(wild2.suit)
+      end
+
+      it 'plays a face card low and sets the next wild cards' do
+        expect(wild1.current_value).to eq(nil)
+        expect(wild1.current_suit).to eq(nil)
+        expect(wild2.current_value).to eq(nil)
+        expect(wild2.current_suit).to eq(nil)
+        run.play(card1, 0)
+        expect(run.suit).to eq(card1.suit)
+        expect(wild1.current_value).to eq(card1.next_value)
+        expect(wild1.current_suit).to eq(card1.suit)
+        expect(wild2.current_value).to eq(wild1.next_value)
+        expect(wild2.current_suit).to eq(wild1.suit)
       end
     end
   end

@@ -26,6 +26,14 @@ const render = ({ cards, label }, idx, playerIdx) => {
   pileLabel.append(label);
   const pileCards = createElementWithClass("div", "hand-pile-cards");
   const handler = cardTargetSelectHandler;
+  if (cards.length === 0) {
+    const leftHalf = createElementWithClass("div", "card-left");
+    const rightHalf = createElementWithClass("div", "card-right");
+    leftHalf.setAttribute("data-idx", "0");
+    rightHalf.setAttribute("data-idx", "1");
+    pileCards.append(leftHalf);
+    pileCards.append(rightHalf);
+  }
   cards.forEach((card, idx, cards) => {
     pileCards.append(Card(card, idx, handler, cards.length));
   });
