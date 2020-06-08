@@ -9,7 +9,7 @@ import PlayerSocket from "./channels/player_notifications_channel.js";
 export const state = {};
 
 export function discardHandler() {
-  GameSocket.send({
+  PlayerSocket.send({
     action: "discard",
     choice: state.selectedCard,
     player: state.currentPlayer,

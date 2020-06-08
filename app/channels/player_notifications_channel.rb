@@ -6,6 +6,16 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
     stream_from "player_#{uuid}"
   end
 
+  def discard(data)
+    puts 'DISCARDING'
+    return unless valid_action('play', data['player'])
+
+    # TODO: should send this as an int from the client if possible
+    GAME.players[data['player']].discard(data['choice'].to_i)
+
+    render_all
+  end
+
   def draw(data)
     puts 'DRAWING'
     return unless valid_action(data['action'], data['player'])
