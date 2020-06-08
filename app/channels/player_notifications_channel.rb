@@ -31,8 +31,8 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
   end
 
   # TODO: show some status stuff while joining
-  def join
-    GAME.players << Player.new('Josh', GAME, uuid)
+  def join(data)
+    GAME.players << Player.new(data['name'], GAME, uuid)
     puts 'JOINED'
     puts uuid
   end

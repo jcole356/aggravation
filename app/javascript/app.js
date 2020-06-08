@@ -31,7 +31,8 @@ export function drawFromPileHandler() {
 }
 
 export function joinHandler() {
-  PlayerSocket.send({ action: "join" });
+  const input = document.getElementsByName("name")[0];
+  PlayerSocket.send({ action: "join", name: input.value });
 }
 
 export function playHandler(e) {
