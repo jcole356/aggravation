@@ -27,7 +27,7 @@ export function drawFromPileHandler() {
     return;
   }
 
-  GameSocket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
+  PlayerSocket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
 }
 
 export function joinHandler() {
@@ -39,7 +39,7 @@ export function playHandler(e) {
   const playerIdx = e.currentTarget.getAttribute("data-player-idx");
   const otherCardIdx = e.target.getAttribute("data-idx");
   state.targetCard = otherCardIdx;
-  GameSocket.send({
+  PlayerSocket.send({
     action: "play",
     card_idx: parseInt(state.selectedCard, 10),
     pile_idx: parseInt(idx, 10),
@@ -51,7 +51,7 @@ export function playHandler(e) {
 }
 
 export function play(playerIdx, pileIdx, cardIdx) {
-  GameSocket.send({
+  PlayerSocket.send({
     action: "play",
     card_idx: parseInt(state.selectedCard, 10),
     pile_idx: parseInt(pileIdx, 10),
