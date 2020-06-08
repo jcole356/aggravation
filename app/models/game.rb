@@ -18,11 +18,6 @@ class Game # rubocop:disable Metrics/ClassLength
     @hand = nil
   end
 
-  def broadcast_render
-    ActionCable.server.broadcast 'game_notifications_channel',
-                                 { type: 'render', state: render }
-  end
-
   def build_hand(player)
     PlayerHand.build(player.current_hand, deck)
   end
@@ -101,7 +96,6 @@ class Game # rubocop:disable Metrics/ClassLength
       start_new_hand
       @status = 'started'
     end
-    broadcast_render
   end
 
   def render

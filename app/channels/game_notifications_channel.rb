@@ -54,6 +54,8 @@ class GameNotificationsChannel < ApplicationCable::Channel
 
   def start
     GAME.play
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'render', state: GAME.render }
   end
 
   def unsubscribed
