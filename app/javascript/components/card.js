@@ -21,6 +21,10 @@ function cardSelectHandler(e) {
   currentTarget.classList.add("selected");
 }
 
+function renderObfuscatedCard() {
+  return createElementWithClass("div", "obfuscated-card");
+}
+
 function unselectCards() {
   const cards = document.getElementsByClassName("card");
   Array.prototype.forEach.call(cards, (card) => {
@@ -30,7 +34,10 @@ function unselectCards() {
   });
 }
 
-const render = ({ suit, value }, idx = null, handler = cardSelectHandler, numCards) => {
+const render = ({ obfuscate, suit, value }, idx = null, handler = cardSelectHandler, numCards) => {
+  if (obfuscate) {
+    return renderObfuscatedCard();
+  }
   const leftHalf = createElementWithClass("div", 'card-left');
   const rightHalf = createElementWithClass("div", 'card-right');
   const parsedSuit = (suit && suit.toLowerCase()) || value.toLowerCase();

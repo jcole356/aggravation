@@ -10,7 +10,8 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
     GAME.players << Player.new('Josh', GAME, uuid)
     # ActionCable.server.broadcast "player_#{uuid}",
     #                              { type: 'render', state: GAME.render }
-    puts joined
+    puts 'JOINED'
+    puts uuid
   end
 
   def unsubscribed

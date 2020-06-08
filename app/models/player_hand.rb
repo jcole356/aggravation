@@ -5,6 +5,7 @@ class PlayerHand # rubocop:disable Metrics/ClassLength
   attr_reader :sets, :runs, :cards, :down
 
   HANDS = [
+    { runs: [1, 4] },
     { sets: [2, 3] },
     { runs: [2, 4, true] },
     { sets: [1, 3], runs: [1, 4] }
@@ -79,8 +80,8 @@ class PlayerHand # rubocop:disable Metrics/ClassLength
     piles
   end
 
-  def render
-    Card.render_cards(cards)
+  def render(obfuscate)
+    Card.render_cards(cards, obfuscate)
   end
 
   # Order matters here

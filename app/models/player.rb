@@ -143,8 +143,8 @@ class Player # rubocop:disable Metrics/ClassLength
     hand.remove_card(card)
   end
 
-  def render_hand
-    hand.render
+  def render_hand(obfuscate)
+    hand.render(obfuscate)
   end
 
   def render_piles

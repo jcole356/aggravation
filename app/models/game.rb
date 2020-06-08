@@ -77,21 +77,22 @@ class Game # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def render
+  def render(id)
     {
-      players: render_hands,
+      players: render_hands(id),
       piles: { pile: render_pile }, # TODO: nesting unecessary
       current_player: @current_player_idx,
       turn_state: @turn.state
     }
   end
 
-  def render_hands
+  def render_hands(id)
     players.map do |player|
+      obfuscate = player.id != id
       {
         label: player.name,
         hand: PlayerHand.render(player.current_hand),
-        cards: player.render_hand,
+        cards: player.render_hand(obfuscate),
         piles: player.render_piles,
         score: player.score
       }

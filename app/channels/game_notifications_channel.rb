@@ -55,7 +55,7 @@ class GameNotificationsChannel < ApplicationCable::Channel
     GAME.play
     GAME.players.each do |player|
       ActionCable.server.broadcast "player_#{player.id}",
-                                   { type: 'render', state: GAME.render }
+                                   { type: 'render', state: GAME.render(player.id) }
     end
   end
 
