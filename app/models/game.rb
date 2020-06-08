@@ -91,6 +91,7 @@ class Game # rubocop:disable Metrics/ClassLength
       obfuscate = player.id != id
       {
         label: player.name,
+        own_hand: !obfuscate,
         hand: PlayerHand.render(player.current_hand),
         cards: player.render_hand(obfuscate),
         piles: player.render_piles,

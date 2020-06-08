@@ -42,7 +42,7 @@ const render = ({ players, piles: { pile }, turn_state }) => {
   renderDiscardPile(pile);
   players.forEach((player, idx) => {
     const isCurrentPlayer = appState.currentPlayer === idx;
-    if (isCurrentPlayer) {
+    if (player.own_hand) {
       current.append(Player(player, idx, isCurrentPlayer));
     } else {
       container.append(Player(player, idx, isCurrentPlayer));
