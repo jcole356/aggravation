@@ -30,6 +30,10 @@ export function drawFromPileHandler() {
   GameSocket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
 }
 
+export function joinHandler() {
+  PlayerSocket.send({ action: "join" });
+}
+
 export function playHandler(e) {
   const idx = e.currentTarget.getAttribute("data-idx");
   const playerIdx = e.currentTarget.getAttribute("data-player-idx");
@@ -58,12 +62,14 @@ export function play(playerIdx, pileIdx, cardIdx) {
 }
 
 export function startHandler() {
-  PlayerSocket.send({ action: "start" });
+  GameSocket.send({ action: "start" });
 }
 
 document.addEventListener("turbolinks:load", () => {
-  const button = document.getElementsByClassName("start-game")[0];
-  button.addEventListener("click", startHandler);
+  const joinButton = document.getElementsByClassName("join-game")[0];
+  joinButton.addEventListener("click", joinHandler);
+  const startButton = document.getElementsByClassName("start-game")[0];
+  startButton.addEventListener("click", startHandler);
   const deck = document.getElementsByClassName("deck")[0];
   deck.addEventListener("click", drawFromDeckHandler);
 });

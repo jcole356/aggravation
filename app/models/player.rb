@@ -2,7 +2,7 @@
 
 # Class for player logic
 class Player # rubocop:disable Metrics/ClassLength
-  attr_reader :name, :game, :score, :current_hand
+  attr_reader :name, :game, :score, :current_hand, :id
   attr_accessor :turn
 
   PILE_OPTIONS = {
@@ -10,9 +10,10 @@ class Player # rubocop:disable Metrics/ClassLength
     p: 'Pile'
   }.freeze
 
-  def initialize(name, game)
+  def initialize(name, game, id)
     @name = name
     @game = game
+    @id = id
     @current_hand = 0
     @score = 0
     @turn = nil

@@ -50,6 +50,15 @@ class GameNotificationsChannel < ApplicationCable::Channel
                                  { type: 'render', state: GAME.render }
   end
 
+  # Starts the game and renders per player
+  def start
+    GAME.play
+    GAME.players.each do |player|
+      ActionCable.server.broadcast "player_#{player.id}",
+                                   { type: 'render', state: GAME.render }
+    end
+  end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end

@@ -6,10 +6,11 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
     stream_from "player_#{uuid}"
   end
 
-  def start
-    GAME.play
-    ActionCable.server.broadcast "player_#{uuid}",
-                                 { type: 'render', state: GAME.render }
+  def join
+    GAME.players << Player.new('Josh', GAME, uuid)
+    # ActionCable.server.broadcast "player_#{uuid}",
+    #                              { type: 'render', state: GAME.render }
+    puts joined
   end
 
   def unsubscribed

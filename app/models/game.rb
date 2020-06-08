@@ -70,29 +70,8 @@ class Game # rubocop:disable Metrics/ClassLength
     start_new_hand
   end
 
-  def number_of_players
-    invalid = false
-    num_players = 0
-    until valid_number_of_players(num_players)
-      invalid_selection_response if invalid
-      num_players = number_of_players_prompt
-      invalid = true
-    end
-
-    num_players
-  end
-
-  # TODO: the following
-  # Figure out how to create the players dynamically
-  # Steals
   def play
     if status != 'started'
-      num_players = 3
-      # TODO: adding players to the game should happen in player init
-      num_players.times do |n|
-        name = "Player #{n + 1}"
-        @players << Player.new(name, self)
-      end
       start_new_hand
       @status = 'started'
     end
@@ -119,7 +98,6 @@ class Game # rubocop:disable Metrics/ClassLength
     end
   end
 
-  # TODO: got an error here.  Deck not recycling properly?
   def render_pile
     pile.last.render unless pile.empty?
   end
