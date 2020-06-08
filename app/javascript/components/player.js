@@ -28,6 +28,9 @@ const renderPlayerPiles = (piles, playerIdx) => {
 
 const render = (player, idx, isCurrentPlayer) => {
   const div = createElementWithClass("div", "player-container");
+  if (isCurrentPlayer) {
+    div.classList.add("current");
+  }
   div.append(renderPlayerInfo(player, isCurrentPlayer));
   const cardsDiv = createElementWithClass("div", "cards-container");
   const handDiv = createElementWithClass("div", "hand-container");

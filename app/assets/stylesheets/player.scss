@@ -10,6 +10,9 @@
 .player-container {
   display: flex;
   flex-direction: column;
+  &.current {
+    background-color: green;
+  }
 }
 
 .player-info {
