@@ -2,8 +2,6 @@
 
 # Channel for game notifications
 class GameNotificationsChannel < ApplicationCable::Channel
-  # Is before_action a thing here?
-
   def subscribed
     stream_from 'game_notifications_channel'
   end
@@ -48,12 +46,6 @@ class GameNotificationsChannel < ApplicationCable::Channel
       other_player_idx,
       data['target_card_idx']
     )
-    ActionCable.server.broadcast 'game_notifications_channel',
-                                 { type: 'render', state: GAME.render }
-  end
-
-  def start
-    GAME.play
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'render', state: GAME.render }
   end

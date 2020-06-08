@@ -1,4 +1,5 @@
-import Socket from "./channels/game_notifications_channel.js";
+import GameSocket from "./channels/game_notifications_channel.js";
+import PlayerSocket from "./channels/player_notifications_channel.js";
 
 /**
  * currentPlayer - player whose turn it is
@@ -8,7 +9,7 @@ import Socket from "./channels/game_notifications_channel.js";
 export const state = {};
 
 export function discardHandler() {
-  Socket.send({
+  GameSocket.send({
     action: "discard",
     choice: state.selectedCard,
     player: state.currentPlayer,
@@ -17,7 +18,7 @@ export function discardHandler() {
 }
 
 export function drawFromDeckHandler() {
-  Socket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
+  GameSocket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
 }
 
 // Assumes a player doesn't want to draw if they've selected a card
@@ -26,7 +27,7 @@ export function drawFromPileHandler() {
     return;
   }
 
-  Socket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
+  GameSocket.send({ action: "draw", choice: "pile", player: state.currentPlayer });
 }
 
 export function playHandler(e) {
@@ -34,7 +35,7 @@ export function playHandler(e) {
   const playerIdx = e.currentTarget.getAttribute("data-player-idx");
   const otherCardIdx = e.target.getAttribute("data-idx");
   state.targetCard = otherCardIdx;
-  Socket.send({
+  GameSocket.send({
     action: "play",
     card_idx: parseInt(state.selectedCard, 10),
     pile_idx: parseInt(idx, 10),
@@ -46,7 +47,7 @@ export function playHandler(e) {
 }
 
 export function play(playerIdx, pileIdx, cardIdx) {
-  Socket.send({
+  GameSocket.send({
     action: "play",
     card_idx: parseInt(state.selectedCard, 10),
     pile_idx: parseInt(pileIdx, 10),
@@ -57,7 +58,7 @@ export function play(playerIdx, pileIdx, cardIdx) {
 }
 
 export function startHandler() {
-  Socket.send({ action: "start" });
+  PlayerSocket.send({ action: "start" });
 }
 
 document.addEventListener("turbolinks:load", () => {
