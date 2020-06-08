@@ -18,7 +18,7 @@ export function discardHandler() {
 }
 
 export function drawFromDeckHandler() {
-  GameSocket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
+  PlayerSocket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
 }
 
 // Assumes a player doesn't want to draw if they've selected a card
