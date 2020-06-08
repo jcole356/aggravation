@@ -26,7 +26,7 @@ button {
   display: flex;
 }
 
-.deck, .obfuscated-card {
+.deck {
   @include card-dimensions;
   background-image: image-url("crazy_kimie.jpg");
   margin-right: 10px;
@@ -114,6 +114,14 @@ button {
   }
   &.selected {
     background-color: gray;
+  }
+}
+
+.obfuscated-card {
+  @include card-dimensions;
+  background-image: image-url("crazy_kimie.jpg");
+  &:not(:last-of-type) {
+    @include stacked-cards;
   }
 }
 
