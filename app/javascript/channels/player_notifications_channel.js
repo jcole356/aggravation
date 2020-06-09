@@ -18,7 +18,7 @@ const socket = consumer.subscriptions.create("PlayerNotificationsChannel", {
     switch (type) {
       case "render": {
         console.log("state", state);
-        appState.currentPlayer = state.current_player;
+        appState.currentPlayer = state.current_player_idx;
         Game(state);
         break;
       }

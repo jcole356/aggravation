@@ -80,8 +80,8 @@ class Game # rubocop:disable Metrics/ClassLength
   def render(id)
     {
       players: render_hands(id),
-      piles: { pile: render_pile }, # TODO: nesting unecessary
-      current_player: @current_player_idx,
+      pile: render_pile,
+      current_player_idx: @current_player_idx,
       turn_state: @turn.state
     }
   end

@@ -33,8 +33,9 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
   # TODO: show some status stuff while joining
   def join(data)
     GAME.players << Player.new(data['name'], GAME, uuid)
-    puts 'JOINED'
-    puts uuid
+    ActionCable.server.broadcast 'game_notifications_channel',
+                                 { type: 'join',
+                                   player_count: GAME.players.length }
   end
 
   def play(data)
@@ -61,8 +62,11 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
 
   private
 
-  # TODO: probaby needs to check by id as well
+  # TODO: should not verify the action based on the player sent.
+  # Should use a combination of the uuid and game current player
   def valid_action(action, player)
-    GAME.current_player_idx == player && GAME.turn.state == action
+    return false unless GAME.turn.state == action
+
+    GAME.players.select { |p| p.id == uuid }.first == GAME.players[player]
   end
 end

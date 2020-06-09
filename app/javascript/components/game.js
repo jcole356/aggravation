@@ -31,7 +31,7 @@ const renderDiscardPile = (pile) => {
   }
 };
 
-const render = ({ players, piles: { pile }, turn_state }) => {
+const render = ({ players, pile, turn_state }) => {
   appState.turnState = turn_state;
   const header = document.getElementsByTagName("h1")[0];
   header.className = "hidden";
