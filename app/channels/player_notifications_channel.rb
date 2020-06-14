@@ -35,7 +35,7 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
     GAME.players << Player.new(data['name'], GAME, uuid)
     ActionCable.server.broadcast 'game_notifications_channel',
                                  { type: 'join',
-                                   player_count: GAME.players.length }
+                                   state: { playerCount: GAME.players.length } }
   end
 
   def play(data)
