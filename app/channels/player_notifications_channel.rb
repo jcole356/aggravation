@@ -58,8 +58,8 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
 
   def steal
     player = GAME.get_player_by_id(uuid)
-    puts "#{player.name} would like to steal"
-    # return unless valid_action(data['action'], data['player'])
+    # TODO: broadcast to the game channel
+    puts "#{player.name} would like to steal" if player.can_steal?
   end
 
   def unsubscribed
@@ -73,6 +73,6 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
   def valid_action(action, player)
     return false unless GAME.turn.state == action
 
-    GAME.players.select { |p| p.id == uuid }.first == GAME.players[player]
+    GAME.get_player_by_id(uuid) == GAME.players[player]
   end
 end

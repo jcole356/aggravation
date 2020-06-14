@@ -22,6 +22,10 @@ class Game # rubocop:disable Metrics/ClassLength
     PlayerHand.build(player.current_hand, deck)
   end
 
+  def current_player
+    @players[@current_player_idx]
+  end
+
   def deal
     players.each do |player|
       player.start_new_hand(build_hand(player))
@@ -36,8 +40,8 @@ class Game # rubocop:disable Metrics/ClassLength
       next_hand
       return
     end
+    # TODO: break these up a bit
     @current_player_idx = (@current_player_idx + 1) % @players.count
-    current_player = @players[@current_player_idx]
     @turn = Turn.new(current_player)
     current_player.turn = @turn
   end
@@ -65,6 +69,10 @@ class Game # rubocop:disable Metrics/ClassLength
 
   def get_player_by_id(id)
     players.select { |player| player.id == id }.first
+  end
+
+  def previous_player
+    @players[(@current_player_idx - 1) % @players.count]
   end
 
   def next_hand
