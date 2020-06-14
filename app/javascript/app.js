@@ -8,15 +8,6 @@ import PlayerSocket from "./channels/player_notifications_channel.js";
  */
 export const state = {};
 
-export function discardHandler() {
-  PlayerSocket.send({
-    action: "discard",
-    choice: state.selectedCard,
-    player: state.currentPlayer,
-  });
-  state.selectedCard = undefined;
-}
-
 export function drawFromDeckHandler() {
   PlayerSocket.send({ action: "draw", choice: "deck", player: state.currentPlayer });
 }

@@ -56,6 +56,12 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
     render_all
   end
 
+  def steal
+    player = GAME.get_player_by_id(uuid)
+    puts "#{player.name} would like to steal"
+    # return unless valid_action(data['action'], data['player'])
+  end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end

@@ -58,8 +58,13 @@ class Game # rubocop:disable Metrics/ClassLength
     pile.draw
   end
 
+  # TODO: is this used
   def get_player(idx)
     players[idx]
+  end
+
+  def get_player_by_id(id)
+    players.select { |player| player.id == id }.first
   end
 
   def next_hand
@@ -82,7 +87,8 @@ class Game # rubocop:disable Metrics/ClassLength
       players: render_hands(id),
       pile: render_pile,
       current_player_idx: @current_player_idx,
-      turn_state: @turn.state
+      turn_state: @turn.state,
+      isPlayersTurn: id == @turn.player.id
     }
   end
 
