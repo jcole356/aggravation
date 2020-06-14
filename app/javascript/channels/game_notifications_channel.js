@@ -16,13 +16,12 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   received({ state, type }) {
     console.log("data", type);
     switch (type) {
-      case "render": {
-        console.log("state", state);
-        appState.currentPlayer = state.current_player;
-        Game(state);
+      case "join": {
+        console.log("SOMEONE JOINED THE GAME");
+        const playersDiv = document.getElementsByClassName("players")[0];
+        playersDiv.innerHTML = `Number of players: ${state.playerCount}`;
         break;
       }
-      case "new":
       default: {
         console.log("default");
         break;

@@ -1,6 +1,7 @@
 import {
   discardHandler,
   drawFromPileHandler,
+  joinHandler,
   startHandler,
   state as appState,
 } from "../app";
@@ -31,10 +32,12 @@ const renderDiscardPile = (pile) => {
   }
 };
 
-const render = ({ players, piles: { pile }, turn_state }) => {
+const render = ({ players, pile, turn_state }) => {
   appState.turnState = turn_state;
-  const header = document.getElementsByTagName("h1")[0];
-  header.className = "hidden";
+  const header = document.getElementsByClassName("header")[0];
+  header.classList.remove("hidden");
+  const input = document.getElementsByTagName("form")[0];
+  input.classList.add("hidden");
   const container = document.getElementsByClassName("players")[0];
   container.innerHTML = null;
   const current = document.getElementsByClassName("current-player")[0];
@@ -42,19 +45,21 @@ const render = ({ players, piles: { pile }, turn_state }) => {
   renderDiscardPile(pile);
   players.forEach((player, idx) => {
     const isCurrentPlayer = appState.currentPlayer === idx;
-    if (isCurrentPlayer) {
+    if (player.own_hand) {
       current.append(Player(player, idx, isCurrentPlayer));
     } else {
       container.append(Player(player, idx, isCurrentPlayer));
     }
   });
-  const button = document.getElementsByClassName("start-game")[0];
-  if (!button) {
+  const buttons = document.getElementsByTagName("button");
+  if (!buttons) {
     return;
   }
-  button.className = "reset hidden";
-  button.innerHTML = "Reset";
-  button.removeEventListener("click", startHandler);
+  Array.prototype.forEach.call(buttons, (button) => {
+    button.classList.add("hidden");
+    button.removeEventListener("click", joinHandler);
+    button.removeEventListener("click", startHandler);
+  })
 };
 
 export default render;

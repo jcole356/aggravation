@@ -56,8 +56,7 @@ button {
     height: 100%;
     margin-right: -50%;
     position: relative;
-    right: 50%;
-    width: 100%;
+    width: 50%;
     &:hover {
       background-color: blue;
       opacity: .2;
@@ -66,9 +65,10 @@ button {
   .card-right {
     float: left;
     height: 100%;
+    left: 50%;
     margin-right: -50%;
     position: relative;
-    width: 100%;
+    width: 50%;
     &:hover {
       background-color: blue;
       opacity: .2;
@@ -114,6 +114,14 @@ button {
   }
   &.selected {
     background-color: gray;
+  }
+}
+
+.obfuscated-card {
+  @include card-dimensions;
+  background-image: image-url("crazy_kimie.jpg");
+  &:not(:last-of-type) {
+    @include stacked-cards;
   }
 }
 

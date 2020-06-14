@@ -53,8 +53,8 @@ class Card # rubocop:disable Metrics/ClassLength
     Card.values + Card.special
   end
 
-  def self.render_cards(cards)
-    cards.map(&:render)
+  def self.render_cards(cards, obfuscate = false)
+    obfuscate ? cards.map { { obfuscate: obfuscate } } : cards.map(&:render)
   end
 
   def self.sum(cards)
