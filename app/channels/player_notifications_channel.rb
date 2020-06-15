@@ -58,8 +58,12 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
 
   def steal
     player = GAME.get_player_by_id(uuid)
-    # TODO: broadcast to the game channel
-    puts "#{player.name} would like to steal" if player.can_steal?
+    if player.can_steal?
+      message = "#{player.name} would like to steal"
+      ActionCable.server.broadcast 'game_notifications_channel',
+                                   { type: 'steal',
+                                     message: message }
+    end
   end
 
   def unsubscribed

@@ -13,7 +13,7 @@ const socket = consumer.subscriptions.create("PlayerNotificationsChannel", {
   },
 
   // Called when there's incoming data on the websocket for this channel
-  received({ state, type }) {
+  received({ message, state, type }) {
     console.log("data", type);
     switch (type) {
       case "render": {

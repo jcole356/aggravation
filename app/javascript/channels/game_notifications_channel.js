@@ -22,6 +22,11 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
         playersDiv.innerHTML = `Number of players: ${state.playerCount}`;
         break;
       }
+      case "steal": {
+        // TODO: messages should render somewhere (HUD?)
+        console.log("message", message);
+        break;
+      }
       default: {
         console.log("default");
         break;
