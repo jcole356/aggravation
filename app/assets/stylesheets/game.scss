@@ -59,7 +59,7 @@ button {
     width: 50%;
     &:hover {
       background-color: blue;
-      opacity: .2;
+      opacity: 0.2;
     }
   }
   .card-right {
@@ -71,7 +71,7 @@ button {
     width: 50%;
     &:hover {
       background-color: blue;
-      opacity: .2;
+      opacity: 0.2;
     }
   }
   .card {
@@ -114,6 +114,20 @@ button {
   }
   &.selected {
     background-color: gray;
+  }
+}
+
+.messages {
+  position: fixed;
+  text-align: center;
+  top: 24px;
+  width: 100%;
+  .message {
+    background-color: yellow;
+    border: 1px solid black;
+    border-radius: 6px;
+    display: inline-block;
+    padding: 4px 12px;
   }
 }
 

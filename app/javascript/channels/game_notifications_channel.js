@@ -1,6 +1,5 @@
 import consumer from "./consumer";
-import { state as appState } from "../app";
-import Game from "../components/game";
+import { createElementWithClass } from "../utils";
 
 const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   // Called when the subscription is ready for use on the server
@@ -13,7 +12,7 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   },
 
   // Called when there's incoming data on the websocket for this channel
-  received({ state, type }) {
+  received({ message, state, type }) {
     console.log("data", type);
     switch (type) {
       case "join": {
@@ -25,6 +24,10 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
       case "steal": {
         // TODO: messages should render somewhere (HUD?)
         console.log("message", message);
+        const messagesDiv = document.getElementsByClassName("messages")[0];
+        const messageDiv = createElementWithClass("div", "message");
+        messageDiv.innerHTML = message;
+        messagesDiv.append(messageDiv);
         break;
       }
       default: {

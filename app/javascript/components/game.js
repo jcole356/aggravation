@@ -29,9 +29,7 @@ const renderDiscardPile = (pile, isPlayersTurn) => {
   if (!isPlayersTurn) {
     pileDiv.removeEventListener("click", discardHandler);
     pileDiv.addEventListener("click", stealHandler);
-    return;
-  }
-  if (appState.turnState === "play") {
+  } else if (appState.turnState === "play") {
     pileDiv.removeEventListener("click", drawFromPileHandler);
     pileDiv.addEventListener("click", discardHandler);
   } else {
@@ -39,7 +37,6 @@ const renderDiscardPile = (pile, isPlayersTurn) => {
     pileDiv.addEventListener("click", drawFromPileHandler);
   }
 
-  // TODO: this could be a lot cleaner
   // Conditinal rendering of pile
   if (!pile) {
     if (pileDiv.firstChild) {
