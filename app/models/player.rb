@@ -141,7 +141,9 @@ class Player # rubocop:disable Metrics/ClassLength
     end
 
     puts 'PLAYING ON OTHERS HAND'
-    play_card(pile, card_idx, other_card_idx) if can_play_on_others_hand?(other_player)
+    if can_play_on_others_hand?(other_player)
+      play_card(pile, card_idx, other_card_idx)
+    end
   end
 
   def remove_card_from_hand(card)
@@ -158,6 +160,15 @@ class Player # rubocop:disable Metrics/ClassLength
 
   def start_new_hand(hand)
     @hand = hand
+  end
+
+  def steal_priority
+    return 0 unless can_steal?
+
+    max_priority = game.number_of_players - 2
+    idx = game.players.index(self)
+    next_idx = (game.current_player_idx + 1) % game.number_of_players
+    max_priority - (next_idx - idx).abs
   end
 
   def total_score

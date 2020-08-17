@@ -23,4 +23,53 @@ RSpec.describe 'Player' do
       expect { player.discard(1) }.to change { hand.cards.count }.by(-1)
     end
   end
+
+  describe 'steal_priority' do
+    let!(:player1) { build(:player, name: 'Freddy', game: game) }
+    let!(:player2) { build(:player, name: 'Jason', game: game) }
+    let!(:player3) { build(:player, name: 'Michael', game: game) }
+    let!(:player4) { build(:player, name: 'Jigsaw', game: game) }
+
+    context 'when the current player idx is 0' do
+      let!(:game) { build(:game, current_player_idx: 0) }
+
+      it 'returns 0 for the current player' do
+        puts game.players.length
+        expect(player1.steal_priority).to eq(0)
+      end
+
+      it 'returns 0 for the player who discarded' do
+        expect(player4.steal_priority).to eq(0)
+      end
+
+      it 'returns the correct value for the first eligible theif' do
+        expect(player2.steal_priority).to eq(2)
+      end
+
+      it 'returns the correct value for the second eligible theif' do
+        expect(player3.steal_priority).to eq(1)
+      end
+    end
+
+    context 'when the current player idx is 3' do
+      let!(:game) { build(:game, current_player_idx: 3) }
+
+      it 'returns 0 for the current player' do
+        puts game.players.length
+        expect(player4.steal_priority).to eq(0)
+      end
+
+      it 'returns 0 for the player who discarded' do
+        expect(player3.steal_priority).to eq(0)
+      end
+
+      it 'returns the correct value for the first eligible theif' do
+        expect(player1.steal_priority).to eq(2)
+      end
+
+      it 'returns the correct value for the second eligible theif' do
+        expect(player2.steal_priority).to eq(1)
+      end
+    end
+  end
 end

@@ -1,5 +1,5 @@
 import consumer from "./consumer";
-import { createElementWithClass } from "../utils";
+import Message from "../components/message";
 
 const socket = consumer.subscriptions.create("GameNotificationsChannel", {
   // Called when the subscription is ready for use on the server
@@ -22,12 +22,8 @@ const socket = consumer.subscriptions.create("GameNotificationsChannel", {
         break;
       }
       case "steal": {
-        // TODO: messages should render somewhere (HUD?)
         console.log("message", message);
-        const messagesDiv = document.getElementsByClassName("messages")[0];
-        const messageDiv = createElementWithClass("div", "message");
-        messageDiv.innerHTML = message;
-        messagesDiv.append(messageDiv);
+        Message(message, true);
         break;
       }
       default: {

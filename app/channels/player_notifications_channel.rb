@@ -59,11 +59,22 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
   def steal
     player = GAME.get_player_by_id(uuid)
     if player.can_steal?
+      GAME.steal(player)
       message = "#{player.name} would like to steal"
       ActionCable.server.broadcast 'game_notifications_channel',
                                    { type: 'steal',
                                      message: message }
     end
+  end
+
+  # TODO: I don't think we need any of this, if someone clicks to steal
+  # update the message based on the priority.  Otherwise, reward the steal
+  def steal_confirm
+    player = GAME.get_player_by_id(uuid)
+  end
+
+  def steal_deny
+    player = GAME.get_player_by_id(uuid)
   end
 
   def unsubscribed

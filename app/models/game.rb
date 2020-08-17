@@ -41,7 +41,7 @@ class Game # rubocop:disable Metrics/ClassLength
       return
     end
     # TODO: break these up a bit
-    @current_player_idx = (@current_player_idx + 1) % @players.count
+    @current_player_idx = (@current_player_idx + 1) % number_of_players
     @turn = Turn.new(current_player)
     current_player.turn = @turn
   end
@@ -72,7 +72,7 @@ class Game # rubocop:disable Metrics/ClassLength
   end
 
   def previous_player
-    @players[(@current_player_idx - 1) % @players.count]
+    @players[(@current_player_idx - 1) % number_of_players]
   end
 
   def next_hand
@@ -81,6 +81,10 @@ class Game # rubocop:disable Metrics/ClassLength
       player.advance_hand if player.hand.down
     end
     start_new_hand
+  end
+
+  def number_of_players
+    players.length
   end
 
   def play
@@ -126,6 +130,11 @@ class Game # rubocop:disable Metrics/ClassLength
     @turn = Turn.new(current_player)
     current_player.turn = @turn
     deal
+  end
+
+  # TODO: determine player rank
+  def steal(player)
+    @turn.attempt_steal(player)
   end
 
   def valid_number_of_players(num)

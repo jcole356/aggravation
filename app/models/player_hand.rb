@@ -5,10 +5,10 @@ class PlayerHand # rubocop:disable Metrics/ClassLength
   attr_reader :sets, :runs, :cards, :down
 
   HANDS = [
+    { sets: [1, 3], runs: [1, 4] },
     { runs: [1, 4] },
     { sets: [2, 3] },
-    { runs: [2, 4, true] },
-    { sets: [1, 3], runs: [1, 4] }
+    { runs: [2, 4, true] }
   ].freeze
 
   def initialize(cards, sets = nil, runs = nil)
