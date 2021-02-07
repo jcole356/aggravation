@@ -30,7 +30,7 @@ RSpec.describe 'Player' do
     let!(:player3) { build(:player, name: 'Michael', game: game) }
     let!(:player4) { build(:player, name: 'Jigsaw', game: game) }
 
-    context 'when the current player idx is 0' do
+    context 'when the current player is player 1' do
       let!(:game) { build(:game, current_player_idx: 0) }
 
       it 'returns 0 for the current player' do
@@ -51,7 +51,7 @@ RSpec.describe 'Player' do
       end
     end
 
-    context 'when the current player idx is 3' do
+    context 'when the current player is the last player' do
       let!(:game) { build(:game, current_player_idx: 3) }
 
       it 'returns 0 for the current player' do

@@ -13,6 +13,8 @@ class Turn
   end
 
   def attempt_steal(theif)
+    return unless theif.can_steal?
+
     @steal = Steal.new(theif)
   end
 end
