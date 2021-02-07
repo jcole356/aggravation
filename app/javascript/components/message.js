@@ -12,22 +12,30 @@ function stealApprovalHandler(e) {
 // TODO: not sure the classes are required
 function noButton() {
   const noSpan = createElementWithClass("span", "deny");
-  noSpan.innerHTML = "No";
+  noSpan.innerHTML = "Steal";
   noSpan.addEventListener("click", stealApprovalHandler);
   return noSpan;
 }
 
 function yesButton() {
   const yesSpan = createElementWithClass("span", "confirm");
-  yesSpan.innerHTML = "Yes";
+  yesSpan.innerHTML = "Pass";
   yesSpan.addEventListener("click", stealApprovalHandler);
   return yesSpan;
 }
 
-// TODO: send a message per user
 function render(message, prompt) {
   const messagesDiv = document.getElementsByClassName("messages")[0];
-  const messageDiv = createElementWithClass("div", "message");
+  messagesDiv.innerHTML = null;
+  if (!message) {
+    return;
+  }
+  let messageDiv = document.getElementsByClassName("message")[0];
+  if (!messageDiv) {
+    messageDiv = createElementWithClass("div", "message");
+  } else {
+    messageDiv.innerHTML = null;
+  }
   const messageSpan = createElementWithClass("span");
   messageSpan.innerHTML = message;
   messageDiv.append(messageSpan);

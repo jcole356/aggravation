@@ -56,25 +56,60 @@ class PlayerNotificationsChannel < ApplicationCable::Channel
     render_all
   end
 
+  # TODO: should rename to steal_attempt
+  # TODO: looks like this works for everyone except for the first hand
+  # last player is treated as if they had discarded
   def steal
-    player = GAME.get_player_by_id(uuid)
-    if player.can_steal?
-      GAME.steal(player)
-      message = "#{player.name} would like to steal"
-      ActionCable.server.broadcast 'game_notifications_channel',
-                                   { type: 'steal',
-                                     message: message }
+    theif = GAME.get_player_by_id(uuid)
+    if theif.can_steal?
+      # Initiate the steal
+      GAME.steal(theif)
+      message = "#{theif.name} would like to steal"
+      GAME.players.each do |player|
+        # TODO: Also need to prompt if it's the first turn of the game
+        if player.can_steal? || GAME.current_player == player
+          puts '-----CAN_STEAL--------'
+          puts player.can_steal?
+          puts '-----CURRENT PLAYER-------'
+          puts GAME.current_player
+          puts '------PLAYER--------'
+          puts player
+          puts '-------PRIORITY------'
+          puts player.steal_priority
+          puts theif.steal_priority
+          should_prompt = theif.steal_priority < player.steal_priority || GAME.current_player == player
+        end
+        ActionCable.server.broadcast "player_#{player.id}",
+                                     { type: 'steal',
+                                       message: message,
+                                       prompt: should_prompt }
+      end
     end
   end
 
-  # TODO: I don't think we need any of this, if someone clicks to steal
-  # update the message based on the priority.  Otherwise, reward the steal
+  # TODO: Needs to confirm that the player is higher priority (don't rely on the client)
+  # TODO: currently, highest priority player will have to confirm for each attempt
+  # We should track their confirmation instead of asking more than once.
+  # TODO: clear the prompt after eash confirmation or denial
   def steal_confirm
     player = GAME.get_player_by_id(uuid)
+    state = GAME&.turn&.steal&.execute
+    if state === 'attempted'
+      message = 'Waiting for others'
+      should_prompt = false
+    end
+    ActionCable.server.broadcast "player_#{player.id}",
+                                     { type: 'steal',
+                                       message: message,
+                                       prompt: should_prompt }
   end
 
+  # TODO: Should confirm the denier has appropriate permissions to deny
+  # One denial ends the current steal and either processes the current players turn
+  # or steals for the person ahead
   def steal_deny
-    player = GAME.get_player_by_id(uuid)
+    # player = GAME.get_player_by_id(uuid)
+    GAME&.turn&.steal&.cancel
   end
 
   def unsubscribed

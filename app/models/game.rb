@@ -72,6 +72,8 @@ class Game # rubocop:disable Metrics/ClassLength
   end
 
   def previous_player
+    return nil if @turn.first_turn
+    
     @players[(@current_player_idx - 1) % number_of_players]
   end
 
@@ -127,7 +129,7 @@ class Game # rubocop:disable Metrics/ClassLength
     @hand = GameHand.new(@dealer_idx)
     @current_player_idx = @dealer_idx + 1
     current_player = @players[@current_player_idx]
-    @turn = Turn.new(current_player)
+    @turn = Turn.new(current_player, true)
     current_player.turn = @turn
     deal
   end

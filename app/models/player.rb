@@ -39,7 +39,7 @@ class Player # rubocop:disable Metrics/ClassLength
     hand.down && pile.type == Run
   end
 
-  # TODO: should probably also account for turn state
+  # TODO: Needs to be different for just the first turn
   def can_steal?
     !(@game.current_player == self || @game.previous_player == self)
   end
